@@ -34,7 +34,7 @@ header {
   max-width: 1190px;
   min-height: 170px;
   margin: auto;
-  padding: 12px 10px 0 70px;
+  padding: 12px 0 0 70px;
   /*border: 1px solid red;*/
   background-color: white;
   display: flex;
@@ -43,7 +43,7 @@ header {
 main {
   max-width: 1190px;
   margin: auto;
-  padding: 12px 40px 40px 40px;
+  padding: 12px 35px 40px 35px;
   background-color: white;
   /*border: 1px solid blue;*/
   /*display: flex;*/
@@ -150,6 +150,12 @@ header g {
 .list-controls {
   background-color: #8c8c8c;
   width: 100%;
+  display: inline-block;
+  border-top: 2px solid grey;
+  border-bottom: 2px solid grey;
+  border-left: 2px solid grey;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 label {
@@ -221,7 +227,7 @@ hr {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(14, 1fr [col-start]);
-  grid-template-rows: repeat(10, 1fr [row-start]);
+  grid-template-rows: repeat(11, 1fr [row-start]);
   align-content: start;
 }
 
@@ -230,6 +236,7 @@ hr {
     grid-column: 1 / span 14;
     grid-row: 1 / span 1;
     background-color: #333333;
+    /*background-color: seagreen;*/
     color: white;
     display: flex;
     align-items: center;
@@ -333,6 +340,8 @@ hr {
   border-width: 1px;
   display: flex;
   align-items: center;
+  /*border: 1px solid red;*/
+  /*color: seagreen;*/
 }
 
 .col-head {
@@ -625,12 +634,7 @@ label {
 }
 
 form {
-  display: inline-block;
-  border-top: 2px solid grey;
-  border-bottom: 2px solid grey;
-  border-left: 2px solid grey;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+
 }
 
 .topnav {

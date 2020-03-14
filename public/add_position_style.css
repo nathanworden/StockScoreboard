@@ -1,0 +1,139 @@
+@import url("reset.css")
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0 auto;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background-color: #e5e5e5;
+  /*border: 1px solid green;*/
+  overflow: hidden;
+}
+
+.stock-info {
+  /*border: 1px solid red;*/
+  height: 100%;
+  /*margin: auto;*/
+  padding: 50px;
+  align-items: center;
+  /*text-align: center;*/
+}
+
+main {
+  width: 500px;
+  height: 560px;
+  margin: 60px auto 0;
+  /*border: 1px solid red;*/
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 2px -2px;
+  overflow: hidden;
+}
+
+.header {
+  height: 70px;
+  /*border: 1px solid red;*/
+  padding: 0;
+  display: grid;
+}
+
+
+.header h1 {
+  display: block;
+  text-align: center;
+  align-self: center;
+  font-size: 25px;
+  color: black;
+  font-weight: 300;
+  /*border: 1px solid red;*/
+}
+
+.zig-zag {
+  border: 0;   /* in order to override TWBS stylesheet */
+  /*border: 1px solid blue;*/
+  height: 3px;
+  background: linear-gradient(to right, 
+    #356697 16%, #fccc37 16% 33%, #be3913 33% 50%, #3b933b 50% 66%, #356697 66% 83%, #fccc37 83%);
+}
+
+svg {
+  /*border: 1px solid green;*/
+  /*grid-area: cancel;*/
+}
+
+hr {
+  display: block;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  border-style: inset;
+  border-width: 1px;
+  /*border: 1px solid red;*/
+}
+
+a {
+  position: relative;
+  left: 467px;
+  bottom: 58px;
+  cursor: pointer;
+}
+
+svg:hover {
+  fill: #be3913;
+}
+
+form {
+  /*border: 1px solid blue;*/
+}
+
+.form-row {
+  border: none;
+  /*border: 1px solid green;*/
+  display: flex;
+  padding: 25px 40px 25px 40px;
+}
+
+.form-row label {
+  /*display: block;*/
+  flex: 3;
+  /*border: 1px solid orange;*/
+}
+
+.form-row input {
+  flex: 5;
+  /*border: 1px solid blue;*/
+}
+
+button {
+  padding: 7px 14px 7px 14px;
+  margin: 10px 0 40px 40px;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px -3px;
+  background: linear-gradient(to top, 
+  #e8e8e8, white);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
