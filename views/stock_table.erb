@@ -1,0 +1,57 @@
+<ul class="stock-table-body">
+  <% @all_positions.each do |stock| =%>
+    <li class="stock-row">
+      <div class='ticker'>
+        <div class='company-ticker'><%= stock[:ticker] =%></div>
+        <div class='full-company-name'><%= stock[:current_data].company_name =%></div>
+      </div>
+      <div class='price'><p>$<%= stock[:current_data].latest_price =%></p></div>
+      <div class='one-day-change'><p><%= stock[:one_day_change] =%></p></div>
+      <div class='buy-price'><p>$<%= stock[:purchase_price] =%></p></div>
+      <div class='buy-date'><p><%= stock[:purchase_date] =%></p></div>
+      <div class='shares'><p><%= stock[:shares] =%></p></div>
+      <div class='return-percentage'><p>17.45%</p></div>
+      <div class='vs-sp'><p>8.5%</p></div>
+      <div class='total-cost-basis'><p>$1,820</p></div>
+      <div class='percent-portfolio'><p>5%</p></div>
+      <div class='return-dollars'><p>$269</p></div>
+      <div class='market-value'><p>$1,820</p></div>
+      <div class='pe'><p>79.13</p></div>
+      <div class='actions'>
+        <button>
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+          <path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+        </button>
+      </div>
+    </li>
+  <% end %>
+</ul>
+
+
+
+
+
+<!-- <div class='stock-row1'>
+            <div class='ticker'>
+              <div class='company-ticker'>AMZN</div>
+              <div class='full-company-name'>Amazon</div>
+            </div>
+            <div class='price'><p>$1,820.86</p></div>
+            <div class='one-day-change'><p>-3.75%</p></div>
+            <div class='buy-price'><p>$1,551</p></div>
+            <div class='buy-date'><p>12/18/2018</p></div>
+            <div class='shares'><p>1</p></div>
+            <div class='return-percentage'><p>17.45%</p></div>
+            <div class='vs-sp'><p>8.5%</p></div>
+            <div class='total-cost-basis'><p>$1,820</p></div>
+            <div class='percent-portfolio'><p>5%</p></div>
+            <div class='return-dollars'><p>$269</p></div>
+            <div class='market-value'><p>$1,820</p></div>
+            <div class='pe'><p>79.13</p></div>
+            <div class='actions'>
+              <button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                  <path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+            </button>
+            </div>
+          </div> -->

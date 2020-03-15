@@ -227,19 +227,39 @@ hr {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(14, 1fr [col-start]);
-  grid-template-rows: repeat(11, 1fr [row-start]);
+  grid-template-rows: 50px 90%;
   align-content: start;
 }
 
+
 .stock-table-header {
-    /*border: 1px solid seagreen;*/
-    grid-column: 1 / span 14;
-    grid-row: 1 / span 1;
-    background-color: #333333;
-    /*background-color: seagreen;*/
-    color: white;
-    display: flex;
-    align-items: center;
+  /*border: 1px solid seagreen;*/
+  grid-column: 1 / span 14;
+  /*grid-row: 1;*/
+  background-color: #333333;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.stock-table-body {
+  grid-column: 1 / span 14;
+  /*grid-row: 2 / span 1;*/
+  /*border: 1px solid green;*/
+  margin-block-start: 0;
+  margin-block-end: 1em;
+  padding-inline-start: 0;
+}
+
+
+.stock-row {
+  grid-column: 1 / span 14;
+  grid-row: 2 / span 1;
+  border: 1px solid #dbdbdb;
+  border-style: inset;
+  border-width: 1px;
+  display: flex;
+  align-items: center;
 }
 
 .stock-row1 {
