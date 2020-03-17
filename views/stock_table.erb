@@ -6,17 +6,17 @@
         <div class='full-company-name'><%= stock[:current_data].company_name =%></div>
       </div>
       <div class='price'><p>$<%= stock[:current_data].latest_price =%></p></div>
-      <div class='one-day-change'><p><%= stock[:one_day_change] =%></p></div>
+      <div class='one-day-change'><p><%= stock[:one_day_change] =%>%</p></div>
       <div class='buy-price'><p>$<%= stock[:purchase_price] =%></p></div>
       <div class='buy-date'><p><%= stock[:purchase_date] =%></p></div>
       <div class='shares'><p><%= stock[:shares] =%></p></div>
-      <div class='return-percentage'><p>17.45%</p></div>
-      <div class='vs-sp'><p>8.5%</p></div>
-      <div class='total-cost-basis'><p>$1,820</p></div>
-      <div class='percent-portfolio'><p>5%</p></div>
-      <div class='return-dollars'><p>$269</p></div>
-      <div class='market-value'><p>$1,820</p></div>
-      <div class='pe'><p>79.13</p></div>
+      <div class='return-percentage'><p><%= stock[:return_percent] =%>%</p></div>
+      <div class='vs-sp'><p><%= stock[:sandp_on_purchase_date] =%></p></div>
+      <div class='total-cost-basis'><p><%= stock[:cost_basis] =%></p></div>
+      <div class='percent-portfolio'><p><%= stock[:percent_portfolio] =%>%</p></div>
+      <div class='return-dollars'><p><%= stock[:return_dollars] =%></p></div>
+      <div class='market-value'><p><%= stock[:market_value]=%></p></div>
+      <div class='pe'><p><%= stock[:pe_ratio] =%></p></div>
       <div class='actions'>
         <button>
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">

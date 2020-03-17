@@ -36,7 +36,7 @@
         <article class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
-          <p class="pos"></p>
+          <p class="pos"><%= @todays_sp_points =%> (<%= @todays_sp_percent =%>%)</p>
         </article>
         <article class="metric"> 
           <h6>Total Returns:</h6>
@@ -125,7 +125,7 @@
             <div class='col-head'><p>Buy Price</p></div>
             <div class='col-head'><p>Buy Date</p></div>
             <div class='col-head'><p>Shares</p></div>
-            <div class='col-head'><p>Return</p></div>
+            <div class='col-head'><p>Return (%)</p></div>
             <div class='col-head'><p>vs. S&P</p></div>
             <div class='col-head'><p>Total Cost Basis</p></div>
             <div class='col-head'><p>% Portfolio</p></div>

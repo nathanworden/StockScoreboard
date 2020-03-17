@@ -1,4 +1,5 @@
 require "pg"
+require "date"
 
 
 class DatabasePersistence
@@ -26,12 +27,44 @@ class DatabasePersistence
     query(sql, ticker)
   end
 
+  def get_full_portfolio_amount
+    sql = "SELECT sum(shares * purchase_price) FROM stocks"
+    result = query(sql)
+
+    result.map do |tuple|
+      tuple["sum"].to_f
+    end[0]
+  end
+
   def get_all_positions
     sql = "SELECT * from stocks"
     result = query(sql)
 
     result.map do |tuple|
       tuple_to_list_hash(tuple)
+    end
+  end
+
+  def get_historical_sandp(date)
+    sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
+    result = query(sql, date)
+
+    result.map do |tuple|
+      tuple["close_price"]
+    end
+  end
+
+  def add_yesterday_sandp
+    date = (Date.today) - 1
+    result = 'before'
+    if date.wday != 6 || date.wday != 0
+      sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
+      result = (query(sql, date))
+    end
+
+    price_exists_in_database = !!result.map {|ele| ele}[0]
+    if !price_exists_in_database
+      sql = "INSERT INTO s_and_p (hist_date, close_price) VALUES ($1, $2)"
     end
   end
 
@@ -43,7 +76,7 @@ class DatabasePersistence
     {ticker: tuple["ticker"],
      shares: tuple["shares"].to_f,
      purchase_date: tuple["purchase_date"],
-     purchase_price: tuple["purchase_price"],
-     comission: tuple["comission"]}
+     purchase_price: tuple["purchase_price"].to_f,
+     comission: tuple["comission"].to_f}
   end
 end
