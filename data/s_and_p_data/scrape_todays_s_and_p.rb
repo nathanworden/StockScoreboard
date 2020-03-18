@@ -16,7 +16,7 @@ def todays_sp_points
     output += span.content
   end
 
-  output
+  output[0..-2]
 end
 
 
@@ -37,13 +37,20 @@ def todays_sp_percent
 end
 
 def yesterday_sp_close
-  url = 'https://finance.yahoo.com/quote/%5EGSPC/history?period1=-1325635200&period2=1584403200&interval=1d&filter=history&frequency=1d'
+  url = 'https://www.marketwatch.com/investing/index/spx/historical'
   html = open(url)
   doc = Nokogiri::HTML(html)
+
+
+  previous_close = doc.css('.quotedisplay.tenwidequote .prevclose .price')
+  just_content = previous_close.map do |data|
+    data.content.strip
+  end
+
+  str = just_content[0]
+  no_comma = str.gsub(/,/, '')
+  no_comma.to_f.round(2)
 end
-
-
-
 
 
 

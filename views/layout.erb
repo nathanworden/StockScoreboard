@@ -36,7 +36,7 @@
         <article class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
-          <p class="pos"><%= @todays_sp_points =%> (<%= @todays_sp_percent =%>%)</p>
+          <p class="neg"><%= @todays_sp_points =%>% (<%= @todays_sp_percent =%>%)</p>
         </article>
         <article class="metric"> 
           <h6>Total Returns:</h6>
@@ -146,6 +146,11 @@
         } else {
           x.className = "topnav";
         }
+      }
+    </script>
+    <script>
+      function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
       }
     </script>
   </body>

@@ -21,13 +21,19 @@ def pull_market_data(all_positions, total_portfolio_amount)
     stock[:percent_portfolio] = ((stock[:cost_basis] / total_portfolio_amount) * 100).round(2)
     stock[:market_value] = ((stock[:current_data].latest_price * stock[:shares])).round(2)
     stock[:pe_ratio] = stock[:current_data].pe_ratio
-    stock[:sandp_on_purchase_date] = stock[:purchase_date] #@storage.get_historical_sandp(stock[:purchase_date])
+    stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
   end
+end
+
+def calculate_sandp_on_purchase_date(stock)
+  sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
+  (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
 end
 
 before do
   @storage = DatabasePersistence.new(logger)
   StockQuote::Stock.new(api_key: "pk_fc4bf13336e54aa8b8a63f36d3cd05f0")
+  @storage.add_yesterday_sandp(yesterday_sp_close)
 end
 
 after do
@@ -35,15 +41,15 @@ after do
 end
 
 get "/" do
-  # all_positions = @storage.get_all_positions
-  # total_portfolio_amount = @storage.get_full_portfolio_amount
-  # @all_positions = pull_market_data(all_positions, total_portfolio_amount)
-  # @todays_sp_percent = todays_sp_percent
-  # @todays_sp_points = todays_sp_points
+  all_positions = @storage.get_all_positions
+  total_portfolio_amount = @storage.get_full_portfolio_amount
+  @all_positions = pull_market_data(all_positions, total_portfolio_amount)
+  @todays_sp_percent = todays_sp_percent
+  @todays_sp_points = todays_sp_points
 
 
-  "#{@storage.add_yesterday_sandp}"
-  # erb :stock_table, layout: :layout
+  # "#{yesterday_sp_close}"
+  erb :stock_table, layout: :layout
 end
 
 get "/addposition" do 
@@ -54,6 +60,16 @@ post "/addposition" do
   @all_params = params
   @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["comission"])
   # erb :didwegetit, layout: :blank
+  redirect "/"
+end
+
+post "/delete-position/:ticker" do
+  @storage.delete_position(params[:ticker])
+  redirect "/"
+end
+
+post "/edit-position" do
+
   redirect "/"
 end
 

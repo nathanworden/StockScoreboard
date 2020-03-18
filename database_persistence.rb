@@ -22,6 +22,11 @@ class DatabasePersistence
     query(sql, ticker, shares, purchase_date, purchase_price, comission)
   end
 
+  def delete_position(ticker)
+    sql = "DELETE FROM stocks WHERE ticker = $1"
+    query(sql, ticker)
+  end
+
   def get_position(ticker)
     sql = "SELECT * from stocks WHERE ticker = $1"
     query(sql, ticker)
@@ -54,7 +59,7 @@ class DatabasePersistence
     end
   end
 
-  def add_yesterday_sandp
+  def add_yesterday_sandp(yesterday_sp_close)
     date = (Date.today) - 1
     result = 'before'
     if date.wday != 6 || date.wday != 0
@@ -62,9 +67,10 @@ class DatabasePersistence
       result = (query(sql, date))
     end
 
-    price_exists_in_database = !!result.map {|ele| ele}[0]
+    price_exists_in_database = !!(result.map {|ele| ele}[0])
     if !price_exists_in_database
       sql = "INSERT INTO s_and_p (hist_date, close_price) VALUES ($1, $2)"
+      query(sql, date.to_s, yesterday_sp_close)
     end
   end
 

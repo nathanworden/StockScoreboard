@@ -43,7 +43,7 @@ header {
 main {
   max-width: 1190px;
   margin: auto;
-  padding: 12px 35px 40px 35px;
+  padding: 12px 35px 80px 35px;
   background-color: white;
   /*border: 1px solid blue;*/
   /*display: flex;*/
@@ -494,7 +494,6 @@ hr {
   margin: 2px 3px 2px 3px;*/
 }
 
-
 .company-ticker {
   font-size: 13px;
   /*border: 1px solid blue;*/
@@ -674,6 +673,52 @@ form {
 
 .topnav .icon {
   display: none;
+}
+
+
+.dropdown-content {
+  /*border: 1px solid red;*/
+  display: none;
+}
+
+.dropbtn {
+  /*border: 1px solid blue;*/
+  
+}
+
+/*.actions:hover .dropdown-content {
+  display: block;
+}*/
+
+.show {
+  display: block;
+  width: 90px;
+}
+
+.dropdown-content form {
+  display: inline-block;
+  padding: 1px 2px 1px 2px;
+  margin: 1px 2px 1px 2px;
+}
+
+.dropdown-content .delete {
+  color: white;
+   background-color: #356697;
+}
+
+.dropdown-content .delete:hover {
+  color: white;
+  background-color: #be3913;
+}
+
+.dropdown-content .edit {
+  color: white;
+   background-color: #356697;
+}
+
+.dropdown-content .edit:hover {
+  color: white;
+   background-color: #fccc37;
 }
 
 
