@@ -5,15 +5,21 @@ require_relative "database_persistence"
 require "stock_quote"
 require 'rbconfig'
 require_relative "./data/s_and_p_data/scrape_todays_s_and_p.rb"
+require 'date'
 
 configure(:development) do
   require "sinatra/reloader"
   also_reload "database_persistence.rb"
 end
 
+def pos_or_neg(value)
+  value.to_f >= 0 ? "pos" : "neg"
+end
+
 def pull_market_data(all_positions, total_portfolio_amount)
   all_positions.each do |stock|
     stock[:current_data] = StockQuote::Stock.quote(stock[:ticker])
+    stock[:latest_price] = get_latest_price(stock)
     stock[:one_day_change] = (stock[:current_data].change_percent * 100).round(2)
     stock[:return_dollars] = ((stock[:current_data].latest_price - stock[:purchase_price].to_f) * stock[:shares]).round(2)
     stock[:return_percent] = ((stock[:current_data].latest_price - stock[:purchase_price].to_f) / stock[:purchase_price].to_f * 100).round(2)
@@ -25,9 +31,32 @@ def pull_market_data(all_positions, total_portfolio_amount)
   end
 end
 
+def get_latest_price(stock)
+  unformatted = (stock[:current_data].latest_price).round(2)
+  unformatted.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+end
+
+def format_num(num)
+  num.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+end
+
 def calculate_sandp_on_purchase_date(stock)
-  sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
-  (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
+  datestr = create_date_str
+  if stock[:purchase_date] == datestr
+    todays_sp_percent.to_f
+  else
+    sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
+    (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
+  end
+end
+
+def create_date_str
+  date = Date.today
+  month = date.mon.to_s
+  monthday = date.mday.to_s
+  month.length == 1 ? month = "0" + month : month
+  monthday.length == 1 ? monthday = "0" + month : monthday
+  "#{date.year}-#{month}-#{monthday}"
 end
 
 before do
@@ -42,13 +71,11 @@ end
 
 get "/" do
   all_positions = @storage.get_all_positions
-  total_portfolio_amount = @storage.get_full_portfolio_amount
-  @all_positions = pull_market_data(all_positions, total_portfolio_amount)
+  @total_portfolio_amount = @storage.get_full_portfolio_amount
+  @all_positions = pull_market_data(all_positions, @total_portfolio_amount)
   @todays_sp_percent = todays_sp_percent
   @todays_sp_points = todays_sp_points
 
-
-  # "#{yesterday_sp_close}"
   erb :stock_table, layout: :layout
 end
 
@@ -58,7 +85,7 @@ end
 
 post "/addposition" do
   @all_params = params
-  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["comission"])
+  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"])
   # erb :didwegetit, layout: :blank
   redirect "/"
 end
@@ -68,9 +95,14 @@ post "/delete-position/:ticker" do
   redirect "/"
 end
 
-post "/edit-position" do
+post "/edit-position/:ticker" do
+  @position = @storage.get_position(params[:ticker])
+  # @ticker = position[:ticker]
+  # @shares = position[:shares]
+  # @purchase_date = position[:purchase_date]
 
-  redirect "/"
+
+  erb :addposition, layout: :blank
 end
 
 

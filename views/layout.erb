@@ -21,7 +21,7 @@
         <article class="metric">
           <h6>Market Value</h6>
           <hr>
-          <p></p>
+          <p><%= @total_portfolio_amount %></p>
         </article>
         <article class="metric">
           <h6>XIRR</h6>
@@ -36,7 +36,7 @@
         <article class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
-          <p class="neg"><%= @todays_sp_points =%>% (<%= @todays_sp_percent =%>%)</p>
+          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= @todays_sp_points =%>% (<%= @todays_sp_percent =%>%)</p>
         </article>
         <article class="metric"> 
           <h6>Total Returns:</h6>
@@ -149,8 +149,9 @@
       }
     </script>
     <script>
-      function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
+      function actionDropdown(ticker) {
+        document.getElementById(ticker.id).classList.toggle("show");
+        // console.log(ticker);
       }
     </script>
   </body>

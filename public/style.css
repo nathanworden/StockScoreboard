@@ -100,12 +100,6 @@ p {
   flex: 1;
 }
 
-button {
-  /*border: 1px solid red;*/
-  padding: 2px 0 2px 0;
-  margin: 0;
-}
-
 svg {
   flex: 1;
   color: white;
@@ -485,13 +479,11 @@ hr {
   margin: 2px 4px 2px 4px;
 }
 
-.actions button {
+.actions .dropbtn {
   border-radius: 4px;
   box-shadow: 0 1px 1px -3px;
   background: linear-gradient(to top, 
   #e8e8e8, white);
-/*  padding: 2px 5px 2px 5px;
-  margin: 2px 3px 2px 3px;*/
 }
 
 .company-ticker {
@@ -675,7 +667,6 @@ form {
   display: none;
 }
 
-
 .dropdown-content {
   /*border: 1px solid red;*/
   display: none;
@@ -686,40 +677,41 @@ form {
   
 }
 
-/*.actions:hover .dropdown-content {
-  display: block;
-}*/
-
 .show {
   display: block;
   width: 90px;
 }
 
-.dropdown-content form {
-  display: inline-block;
-  padding: 1px 2px 1px 2px;
-  margin: 1px 2px 1px 2px;
-}
-
 .dropdown-content .delete {
   color: white;
-   background-color: #356697;
+  background-color: #356697;
+  border: none;
+  width: 80px;
+  margin: 1px 0 0 0;
+  padding: 4px 0 4px 0;
 }
 
 .dropdown-content .delete:hover {
-  color: white;
+  color: black;
   background-color: #be3913;
+  border: none;
 }
 
 .dropdown-content .edit {
   color: white;
-   background-color: #356697;
+  background-color: #356697;
+  border: none;
+  width: 80px;
+  margin: 1px 0 0 0;
+  padding: 4px 0 4px 0;
 }
 
 .dropdown-content .edit:hover {
-  color: white;
-   background-color: #fccc37;
+  color: black;
+  background-color: #fccc37;
+  border: none;
 }
+
 
 
 @media screen and (max-width: 600px) {

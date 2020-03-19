@@ -17,9 +17,9 @@ class DatabasePersistence
     @db.exec_params(statement, params)
   end
 
-  def add_position(ticker, shares, purchase_date, purchase_price, comission)
-    sql = "INSERT INTO stocks (ticker, shares, purchase_date, purchase_price, comission) VALUES ($1, $2, $3, $4, $5)"
-    query(sql, ticker, shares, purchase_date, purchase_price, comission)
+  def add_position(ticker, shares, purchase_date, purchase_price, commission)
+    sql = "INSERT INTO stocks (ticker, shares, purchase_date, purchase_price, commission) VALUES ($1, $2, $3, $4, $5)"
+    query(sql, ticker, shares, purchase_date, purchase_price, commission)
   end
 
   def delete_position(ticker)
@@ -29,7 +29,11 @@ class DatabasePersistence
 
   def get_position(ticker)
     sql = "SELECT * from stocks WHERE ticker = $1"
-    query(sql, ticker)
+    result = query(sql, ticker)
+
+    result.map do |tuple|
+      tuple_to_list_hash(tuple)
+    end[0]
   end
 
   def get_full_portfolio_amount
@@ -83,6 +87,6 @@ class DatabasePersistence
      shares: tuple["shares"].to_f,
      purchase_date: tuple["purchase_date"],
      purchase_price: tuple["purchase_price"].to_f,
-     comission: tuple["comission"].to_f}
+     commission: tuple["commission"].to_f}
   end
 end

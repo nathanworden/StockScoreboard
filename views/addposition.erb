@@ -16,23 +16,23 @@
         <form action="" method="post">
           <div class="form-row">
             <label for="ticker">Ticker</label>
-            <input type="text" name='ticker' id="ticker"/>
+            <input type="text" name='ticker' id="ticker" value="<%= @position[:ticker] unless !@position %>"/>
           </div>
           <div class="form-row">
             <label for="shares">Shares</label>
-            <input type="text" name='shares' id="shares"/>
+            <input type="text" name='shares' id="shares" value="<%= @position[:shares] unless !@position %>"/>
           </div>
           <div class="form-row">
             <label for="purchase-date">Purchase Date</label>
-            <input type="text" name='purchase-date' id="purchase-date"/>
+            <input type="text" name='purchase-date' id="purchase-date" value="<%= @position[:purchase_date] unless !@position %>"/>
           </div>
           <div class="form-row">
             <label for="purchase-price">Purchase Price</label>
-            <input type="text" name='purchase-price' id="purchase-price"/>
+            <input type="text" name='purchase-price' id="purchase-price" value="<%= @position[:purchase_price] unless !@position %>"/>
           </div>
           <div class="form-row">
             <label for="commission">Commission</label>
-            <input type="text" name="comission" id="comission"/>
+            <input type="text" name="commission" id="commission" value="<%= @position[:commission] unless !@position %>"/>
           </div>
             <button type="submit">
               Add
