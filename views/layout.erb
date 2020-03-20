@@ -21,7 +21,7 @@
         <article class="metric">
           <h6>Market Value</h6>
           <hr>
-          <p><%= @total_portfolio_amount %></p>
+          <p><%= format_num(@total_current_portfolio_market_value) %></p>
         </article>
         <article class="metric">
           <h6>XIRR</h6>
@@ -36,12 +36,12 @@
         <article class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
-          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= @todays_sp_points =%>% (<%= @todays_sp_percent =%>%)</p>
+          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points) %> (<%= @todays_sp_percent =%>%)</p>
         </article>
         <article class="metric"> 
           <h6>Total Returns:</h6>
           <hr>
-          <p class="pos"></p>
+          <p class="<%= pos_or_neg(@total_portfolio_returns) %>"><%= format_num(@total_portfolio_returns.round(2)) %></p>
         </article>
         <article class="metric">
           <h6>1 Day Change ($)</h6>
@@ -119,20 +119,74 @@
       <section class="table">
         <div class='table-grid-container'>
           <div class='stock-table-header'>
-            <div class='col-head'><p>Ticker</p></div>
-            <div class='col-head'><p>Price</p></div>
-            <div class='col-head'><p>1-Day Change</p></div>
-            <div class='col-head'><p>Buy Price</p></div>
-            <div class='col-head'><p>Buy Date</p></div>
-            <div class='col-head'><p>Shares</p></div>
-            <div class='col-head'><p>Return (%)</p></div>
-            <div class='col-head'><p>vs. S&P</p></div>
-            <div class='col-head'><p>Total Cost Basis</p></div>
-            <div class='col-head'><p>% Portfolio</p></div>
-            <div class='col-head'><p>Return ($)</p></div>
-            <div class='col-head'><p>Market Value</p></div>
-            <div class='col-head'><p>P/E</p></div>
-            <div class='col-head'><p>Actions</p></div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="ticker" name="ticker"><p>Ticker</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="latest_price" name="latest_price"><p>Price</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="one_day_change" name="one_day_change"><p>1-Day Change</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="purchase_price" name="purchase_price"><p>Buy Price</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="purchase_date" name="purchase_date"><p>Buy Date</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="shares" name="shares"><p>Shares</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_percent" name="return_percent"><p>Return (%)</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_vs_sandp" name="return_vs_sandp"><p>vs. S&P</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="cost_basis" name="cost_basis"><p>Total Cost Basis</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="percent_portfolio" name="percent_portfolio"><p>% Portfolio</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_dollars" name="return_dollars"><p>Return ($)</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" name='market_value' value='market_value'><p>Market Value</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="pe" name="pe"><p>P/E</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <p>Actions</p>
+            </div>
           </div>
           <%= yield %>
         </div>

@@ -12,6 +12,8 @@ class DatabasePersistence
     @logger = logger
   end
 
+  attr_accessor :table_sort
+
   def query(statement, *params)
     @logger.info "#{statement}: #{params}"
     @db.exec_params(statement, params)
@@ -36,7 +38,7 @@ class DatabasePersistence
     end[0]
   end
 
-  def get_full_portfolio_amount
+  def get_full_portfolio_cost_basis
     sql = "SELECT sum(shares * purchase_price) FROM stocks"
     result = query(sql)
 
@@ -53,6 +55,7 @@ class DatabasePersistence
       tuple_to_list_hash(tuple)
     end
   end
+
 
   def get_historical_sandp(date)
     sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
@@ -76,6 +79,20 @@ class DatabasePersistence
       sql = "INSERT INTO s_and_p (hist_date, close_price) VALUES ($1, $2)"
       query(sql, date.to_s, yesterday_sp_close)
     end
+  end
+
+  def update_table_sort_rule(rule)
+    sql = "UPDATE table_sort_rule SET sort_rule = $1"
+    query(sql, rule)
+  end
+
+  def table_sort_rule
+    sql = "SELECT * from table_sort_rule"
+    result = query(sql)
+
+    result.map do |obj|
+      obj["sort_rule"].to_sym
+    end[0]
   end
 
   def disconnect

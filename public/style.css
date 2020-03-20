@@ -361,7 +361,8 @@ hr {
 .col-head {
   flex: 1;
   padding: 5px 0 5px 0;
-  /*border: 1px solid red;*/
+  text-align: center;
+  /*border: 1px solid blue;*/
 }
 
 .ticker {
@@ -471,6 +472,16 @@ hr {
   text-align: center;
   font-weight: 300;
   font-size: 14px;
+}
+
+.col-head form {
+  display: inline-block;
+}
+
+.col-head button {
+  color: #333333;
+  background-color: #333333;
+  border: none;
 }
 
 .actions button svg {

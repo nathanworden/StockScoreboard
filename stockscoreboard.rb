@@ -12,11 +12,19 @@ configure(:development) do
   also_reload "database_persistence.rb"
 end
 
+before do
+  @storage = DatabasePersistence.new(logger)
+  StockQuote::Stock.new(api_key: "pk_fc4bf13336e54aa8b8a63f36d3cd05f0")
+  @storage.add_yesterday_sandp(yesterday_sp_close)
+end
+
 def pos_or_neg(value)
   value.to_f >= 0 ? "pos" : "neg"
 end
 
-def pull_market_data(all_positions, total_portfolio_amount)
+def pull_market_data(all_positions, total_portfolio_cost_basis)
+  @total_current_portfolio_market_value = 0
+
   all_positions.each do |stock|
     stock[:current_data] = StockQuote::Stock.quote(stock[:ticker])
     stock[:latest_price] = get_latest_price(stock)
@@ -24,16 +32,22 @@ def pull_market_data(all_positions, total_portfolio_amount)
     stock[:return_dollars] = ((stock[:current_data].latest_price - stock[:purchase_price].to_f) * stock[:shares]).round(2)
     stock[:return_percent] = ((stock[:current_data].latest_price - stock[:purchase_price].to_f) / stock[:purchase_price].to_f * 100).round(2)
     stock[:cost_basis] = (stock[:purchase_price] * stock[:shares]).round(2)
-    stock[:percent_portfolio] = ((stock[:cost_basis] / total_portfolio_amount) * 100).round(2)
+    # stock[:percent_portfolio] = ((stock[:cost_basis] / total_portfolio_cost_basis) * 100).round(2)
     stock[:market_value] = ((stock[:current_data].latest_price * stock[:shares])).round(2)
+    @total_current_portfolio_market_value += stock[:market_value]
     stock[:pe_ratio] = stock[:current_data].pe_ratio
     stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
   end
 end
 
+def update_stocks_percent_portfolio(all_positions, total_current_portfolio_market_value)
+  all_positions.each do |stock|
+      stock[:percent_portfolio] = ((stock[:market_value] / total_current_portfolio_market_value) * 100).round(2)
+  end
+end
+
 def get_latest_price(stock)
-  unformatted = (stock[:current_data].latest_price).round(2)
-  unformatted.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+  (stock[:current_data].latest_price).round(2)
 end
 
 def format_num(num)
@@ -59,22 +73,38 @@ def create_date_str
   "#{date.year}-#{month}-#{monthday}"
 end
 
-before do
-  @storage = DatabasePersistence.new(logger)
-  StockQuote::Stock.new(api_key: "pk_fc4bf13336e54aa8b8a63f36d3cd05f0")
-  @storage.add_yesterday_sandp(yesterday_sp_close)
+def order_all_positions_by(rule)
+  @all_positions.sort_by! do |stock|
+    puts "rule: #{rule}"
+    puts "rule.class: #{rule.class}"
+    puts "stock[rule]: #{stock[rule]}"
+    puts "stock[rule].class: #{stock[rule].class}"
+    stock[rule]
+  end
 end
 
 after do
   @storage.disconnect
 end
 
+post "/" do
+  @storage.update_table_sort_rule(params.keys[0])
+  # "#{@storage.table_sort_rule}"
+  redirect "/"
+end
+
 get "/" do
   all_positions = @storage.get_all_positions
-  @total_portfolio_amount = @storage.get_full_portfolio_amount
-  @all_positions = pull_market_data(all_positions, @total_portfolio_amount)
+  @total_portfolio_cost_basis = @storage.get_full_portfolio_cost_basis
+  @all_positions = pull_market_data(all_positions, @total_portfolio_cost_basis)
+
   @todays_sp_percent = todays_sp_percent
   @todays_sp_points = todays_sp_points
+  @total_current_portfolio_market_value = @total_current_portfolio_market_value.round(2)
+  @total_portfolio_returns = @total_current_portfolio_market_value - @total_portfolio_cost_basis
+
+  update_stocks_percent_portfolio(@all_positions, @total_current_portfolio_market_value)
+  @all_positions = order_all_positions_by(@storage.table_sort_rule)
 
   erb :stock_table, layout: :layout
 end
