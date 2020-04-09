@@ -15,3 +15,10 @@ id serial UNIQUE NOT NULL,
 hist_date date NOT NULL,
 close_price decimal(9,2) NOT NULL
 );
+
+CREATE TABLE table_sort_rule (
+sort_rule text
+);
+
+INSERT INTO table_sort_rule (sort_rule)
+VALUES ('percent_portfolio');
