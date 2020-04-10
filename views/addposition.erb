@@ -13,7 +13,7 @@
       </div>
       <hr class="zig-zag">
       <section class="stock-info">
-        <form action="" method="post">
+        <form action="/addposition" method="post">
           <div class="form-row">
             <label for="ticker">Ticker</label>
             <input type="text" name='ticker' id="ticker" value="<%= @position[:ticker] unless !@position %>"/>

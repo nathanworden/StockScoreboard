@@ -4,7 +4,8 @@ ticker text NOT NULL,
 shares integer NOT NULL,
 purchase_date date NOT NULL,
 purchase_price decimal(9, 2) NOT NULL,
-commission decimal (6, 2) NOT NULL
+commission decimal (6, 2) NOT NULL,
+s_and_p_at_stock_purchase_date numeric(9, 2)
 );
 
 -- INSERT INTO stocks (ticker, shares, purchase_date, purchase_price, comission)

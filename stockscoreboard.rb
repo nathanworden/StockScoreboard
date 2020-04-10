@@ -10,6 +10,8 @@ require 'date'
 configure(:development) do
   require "sinatra/reloader"
   also_reload "database_persistence.rb"
+  enable :sessions
+  set :session_secret, 'secret'
 end
 
 before do
@@ -36,7 +38,9 @@ def pull_market_data(all_positions, total_portfolio_cost_basis)
     stock[:market_value] = ((stock[:current_data].latest_price * stock[:shares])).round(2)
     @total_current_portfolio_market_value += stock[:market_value]
     stock[:pe_ratio] = stock[:current_data].pe_ratio
-    stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
+    # stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
+
+    stock[:return_vs_sandp] =  (stock[:return_percent] - s_and_p_return_since_stock_purchase_date(stock)).round(2)
   end
 end
 
@@ -54,24 +58,28 @@ def format_num(num)
   num.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
 end
 
-def calculate_sandp_on_purchase_date(stock)
-  datestr = create_date_str
-  if stock[:purchase_date] == datestr
-    todays_sp_percent.to_f
-  else
-    sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
-    (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
-  end
+def s_and_p_return_since_stock_purchase_date(stock)
+  ((todays_sp_points.to_f - stock[:s_and_p_at_stock_purchase_date]) / stock[:s_and_p_at_stock_purchase_date] * 100)
 end
 
-def create_date_str
-  date = Date.today
-  month = date.mon.to_s
-  monthday = date.mday.to_s
-  month.length == 1 ? month = "0" + month : month
-  monthday.length == 1 ? monthday = "0" + month : monthday
-  "#{date.year}-#{month}-#{monthday}"
-end
+# def calculate_sandp_on_purchase_date(stock)
+#   datestr = create_date_str
+#   if stock[:purchase_date] == datestr
+#     todays_sp_percent.to_f
+#   else
+#     sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
+#     (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
+#   end
+# end
+
+# def create_date_str
+#   date = Date.today
+#   month = date.mon.to_s
+#   monthday = date.mday.to_s
+#   month.length == 1 ? month = "0" + month : month
+#   monthday.length == 1 ? monthday = "0" + month : monthday
+#   "#{date.year}-#{month}-#{monthday}"
+# end
 
 def order_all_positions_by(rule)
   @all_positions.sort_by! do |stock|
@@ -89,7 +97,6 @@ end
 
 post "/" do
   @storage.update_table_sort_rule(params.keys[0])
-  # "#{@storage.table_sort_rule}"
   redirect "/"
 end
 
@@ -115,7 +122,7 @@ end
 
 post "/addposition" do
   @all_params = params
-  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"])
+  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], todays_sp_points)
   # erb :didwegetit, layout: :blank
   redirect "/"
 end

@@ -1,0 +1,1 @@
+As of now (4/9/2020) When you add a stock position, the app will web scrape the current S&P500 point value as of the time you enter the position. (It uses `todays_sp_points` in `scrape_todays_s_and_p.rb`)
