@@ -83,10 +83,6 @@ end
 
 def order_all_positions_by(rule)
   @all_positions.sort_by! do |stock|
-    puts "rule: #{rule}"
-    puts "rule.class: #{rule.class}"
-    puts "stock[rule]: #{stock[rule]}"
-    puts "stock[rule].class: #{stock[rule].class}"
     stock[rule]
   end
 end
