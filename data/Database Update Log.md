@@ -1,8 +1,20 @@
 DATABASE UPDATE LOG
 
+`NOT NULL`
 
+##### 4/10/20
 
-4/9/2020
+- Added a `NOT NULL` clause to the `s_and_p_at_stock_purchase_date` column in the `stocks` table:
+
+`ALTER TABLE stocks ALTER COLUMN s_and_p_at_stock_purchase_date SET NOT NULL;`
+
+- The changes to code were updated to Heroku using `git push heroku master` but this didn't update the data *in* the database on Heroku. So you need to go update that data spicifically. To set up database schema (or insert data) manually, you can log into a psql shell on Heroku with:
+
+`heroku pg:psql -a stock-scoreboard`
+
+By taking a look at the table: `table stocks` you can see that currently the column `s_and_p_at_stock_purchase_date` doesn't exist yet. This is presumably why in the app the "vs. S&P" column is reading "-Infinity%" for every row.
+
+#####4/9/2020
 
 - Added a new column to the `stocks` table for the S&P 500 price at the time of the stock's purchase:
 
@@ -23,4 +35,6 @@ DATABASE UPDATE LOG
 `UPDATE stocks SET s_and_p_at_stock_purchase_date = 2304.92 WHERE purchase_date = '2020-03-20';`
 
 `UPDATE stocks SET s_and_p_at_stock_purchase_date = 3023.94 WHERE purchase_date = '2020-03-05';`
+
+
 
