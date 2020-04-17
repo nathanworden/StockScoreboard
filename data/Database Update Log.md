@@ -1,6 +1,32 @@
 DATABASE UPDATE LOG
 
-`NOT NULL`
+##### 4/17/20
+
+Old MacBook was breaking down, so I needed to export the database. Followed instructions from postgresql.org:
+
+https://www.postgresql.org/docs/9.1/backup-dump.html
+
+`pg_dump dbname > outfile`
+
+In my case this was:
+
+ `pg_dump stock_scorecard > stock_scoreboard_dump.sql`
+
+Then emailed `stock_scoreboard_dump.sql` to myself. Downloaded it on my iMac. Then created the database on my iMac:
+
+In terminal: `createdb stock_scoreboard` 
+
+I changed the name from `stock_scorecard` to `stock_scoreboard` so I needed to update `database_persistence.rb` so that the `PG.connect(dbname: "stock_scoreboard")` was correct.
+
+Then I imported the database dump:
+
+`psql stock_scoreboard < stock_scoreboard_dump.sql`
+
+Then renamed the file and saved it in a folder called 'database dumps'. New name is `04172020_stock_scoreboard_dump.sql`
+
+Was able to run `bundle exec ruby stockscoreboard.rb` and got everything to run correctly.
+
+
 
 ##### 4/10/20
 
@@ -14,7 +40,7 @@ DATABASE UPDATE LOG
 
 By taking a look at the table: `table stocks` you can see that currently the column `s_and_p_at_stock_purchase_date` doesn't exist yet. This is presumably why in the app the "vs. S&P" column is reading "-Infinity%" for every row.
 
-#####4/9/2020
+##### 4/9/2020
 
 - Added a new column to the `stocks` table for the S&P 500 price at the time of the stock's purchase:
 
