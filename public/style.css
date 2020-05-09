@@ -354,8 +354,6 @@ hr {
   border-width: 1px;
   display: flex;
   align-items: center;
-  /*border: 1px solid red;*/
-  /*color: seagreen;*/
 }
 
 .col-head {
@@ -482,6 +480,7 @@ hr {
   color: #333333;
   background-color: #333333;
   border: none;
+  max-height: 50px;
 }
 
 .actions button svg {

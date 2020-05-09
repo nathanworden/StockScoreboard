@@ -55,7 +55,14 @@ def get_latest_price(stock)
 end
 
 def format_num(num)
-  num.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+  negative = num.to_f < 0 ? true : false
+  num = num.to_f.abs
+  converted = num.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+  if negative
+    '-' + '$' + converted
+  else
+    '$' + converted
+  end
 end
 
 def s_and_p_return_since_stock_purchase_date(stock)
@@ -104,7 +111,8 @@ get "/" do
   @todays_sp_percent = todays_sp_percent
   @todays_sp_points = todays_sp_points
   @total_current_portfolio_market_value = @total_current_portfolio_market_value.round(2)
-  @total_portfolio_returns = @total_current_portfolio_market_value - @total_portfolio_cost_basis
+  @total_portfolio_returns_in_dollars = @total_current_portfolio_market_value - @total_portfolio_cost_basis
+  @total_portfolio_returns_percent = @total_portfolio_returns_in_dollars / @total_portfolio_cost_basis
 
   update_stocks_percent_portfolio(@all_positions, @total_current_portfolio_market_value)
   @all_positions = order_all_positions_by(@storage.table_sort_rule)

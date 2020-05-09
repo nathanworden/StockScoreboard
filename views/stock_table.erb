@@ -5,16 +5,16 @@
         <div class='company-ticker'><%= stock[:ticker] %></div>
         <div class='full-company-name'><%= stock[:current_data].company_name %></div>
       </div>
-      <div class='price'><p>$<%= format_num(stock[:latest_price]) %></p></div>
+      <div class='price'><p><%= format_num(stock[:latest_price]) %></p></div>
       <div class='one-day-change <%= pos_or_neg(stock[:one_day_change]) %>'><p><%= stock[:one_day_change] %>%</p></div>
-      <div class='buy-price'><p>$<%= format_num(stock[:purchase_price]) %></p></div>
+      <div class='buy-price'><p><%= format_num(stock[:purchase_price]) %></p></div>
       <div class='buy-date'><p><%= stock[:purchase_date] %></p></div>
       <div class='shares'><p><%= format_num(stock[:shares]) %></p></div>
       <div class='return-percentage <%= pos_or_neg(stock[:return_percent]) %>'><p><%= stock[:return_percent] %>%</p></div>
       <div class='vs-sp <%= pos_or_neg(stock[:return_vs_sandp]) %>'><p><%= stock[:return_vs_sandp] %>%</p></div>
       <div class='total-cost-basis'><p><%= format_num(stock[:cost_basis]) %></p></div>
       <div class='percent-portfolio'><p><%= ((stock[:market_value] / @total_current_portfolio_market_value) * 100).round(2) %>%</p></div>
-      <div class='return-dollars <%= pos_or_neg(stock[:return_dollars]) %>'><p>$<%= format_num(stock[:return_dollars]) %></p></div>
+      <div class='return-dollars <%= pos_or_neg(stock[:return_dollars]) %>'><p><%= format_num(stock[:return_dollars]) %></p></div>
       <div class='market-value'><p><%= format_num(stock[:market_value]) %></p></div>
       <div class='pe'><p><%= stock[:pe_ratio] %></p></div>
       <div class='actions'>

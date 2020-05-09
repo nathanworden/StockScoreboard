@@ -1,5 +1,21 @@
 DATABASE UPDATE LOG
 
+**4/21/20**
+
+Wanted to check what the S&P500 was on the day a stock was bought. But my iMac didn't have heroku installed yet.
+
+`brew tap heroku/brew && brew install heroku`
+
+`heroku login`
+
+You’ll be prompted to enter any key to go to your web browser to complete login. The CLI will then log you in automatically.
+
+Then to connect to my app's PostgreSQL database:
+
+`heroku pg:psql -a stock-scoreboard`
+
+
+
 ##### 4/17/20
 
 Old MacBook was breaking down, so I needed to export the database. Followed instructions from postgresql.org:
