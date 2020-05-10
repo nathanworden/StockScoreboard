@@ -64,7 +64,16 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-06', 2848.42);`
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-07', 2881.19);`
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-08', 2929.80);`
-    - 
+- The `s_and_p` table on heroku only had data from April and May. To pull in data from all the way back to 1900, I did the following:
+  - Database dump of all Schema of `stock_scoreboard` :
+    - `pg_dump stock_scoreboard > 05102020_stock_scoreboard_dump.sql`
+    - In this file all the lines from the table `s_and_p` exiscted, so I copied all of those.
+    - Log into Postgres on heroku: `heroku pg:psql -a stock-scoreboard`
+    - I cleared out all the current data in the table (not sure if this is necessary): `DELETE FROM s_and_p WHERE id > 0;` 
+    - Tell Postgres you are copying data `COPY public.s_and_p (hist_date, close_price) FROM stdin;`
+    - Then heroku (or Postgres?) responds back saying: "Enter data to be copied followed by a newline. End with a backslash and a period on a line by itself, or an EOF signal."
+    - That's when I pasted all the lines of S&P500 data all the way back to 1900 (from the second bullet point above) and then hit 'enter' for the newline and then a `\.` to signal I was done.
+    - It gave me "`COPY 32549`", and all of that data appears to be in there now!
 
 #### 5/9/20
 
