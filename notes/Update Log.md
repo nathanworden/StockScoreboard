@@ -1,4 +1,4 @@
-DATABASE UPDATE LOG
+## UPDATE LOG
 
 #### 5/10/20
 
@@ -30,7 +30,9 @@ Now when you go back and Add a Position you can do fractional shares.
 
 #### 5/9/20
 
+- Added a 'Total Return' metric to the main homescreen. It is just the total return amount to date (positive or negative) divided by the total cost basis for the whole portfolio.
 
+- Added the ability to have the negative sign be before the dollar sign in the  `format_num(num, include_dollar_sign)` function in `stockcoreboard.rb` . Also added the ability to tell it whether to include the dollar sig or not. (Because the dollar sign is not needed for metrics such as shares or the point value of 'Today's S&P 500').
 
 **4/21/20**
 
@@ -89,6 +91,9 @@ Was able to run `bundle exec ruby stockscoreboard.rb` and got everything to run 
 By taking a look at the table: `table stocks` you can see that currently the column `s_and_p_at_stock_purchase_date` doesn't exist yet. This is presumably why in the app the "vs. S&P" column is reading "-Infinity%" for every row.
 
 ##### 4/9/2020
+
+- As of now When you add a stock position, the app will web scrape the current S&P500 point value as of the time you enter the position. (It uses `todays_sp_points` in `scrape_todays_s_and_p.rb`)
+
 
 - Added a new column to the `stocks` table for the S&P 500 price at the time of the stock's purchase:
 
