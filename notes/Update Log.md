@@ -2,11 +2,11 @@
 
 #### 5/10/20
 
-On the 'Add a Position' page, if you entered a fractional share (aka, typed in 20.5 or some other decimal number into the shares input field) you would get an error that said 'invalid input syntax for type integer: "20.5". It listed the file as `database_persistence.rb`. 
+- Bug Fix: On the 'Add a Position' page, if you entered a fractional share (aka, typed in 20.5 or some other decimal number into the shares input field) you would get an error that said 'invalid input syntax for type integer: "20.5". It listed the file as `database_persistence.rb`. 
 
-What I think was happening:
+  What I think was happening:
 
-The schema for the stocks table looks like this:
+  The schema for the stocks table looks like this:	
 
 ```sql
 CREATE TABLE stocks (
@@ -20,13 +20,51 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
 );
 ```
 
-Specifically, the shares column has a data type of integer. To have fractional shares this needs to be a float. Or in SQL parlance, 'numeric' or 'decimal'. So the fix is this:
+​	Specifically, the shares column has a data type of integer. To have fractional shares this 		needs to be a float. Or in SQL parlance, 'numeric' or 'decimal'. So the fix is this:
 
-Enter your psql console: ` psql -d stock_scoreboard` (or if you are logging into Heroku: `heroku pg:psql -a stock-scoreboard`)
+​	Enter your psql console: ` psql -d stock_scoreboard` (or if you are logging into Heroku: 	`heroku pg:psql -a stock-scoreboard`)
 
-Alter the stocks table and shares column: `ALTER TABLE stocks ALTER COLUMN shares TYPE numeric(9,3);`
+​	Alter the stocks table and shares column: `ALTER TABLE stocks ALTER COLUMN shares TYPE numeric(9,3);`
 
-Now when you go back and Add a Position you can do fractional shares.
+​	Now when you go back and Add a Position you can do fractional shares.
+
+- Added Functionality so the print button actually opens the 'print page' dialogue screen! In the `layout.erb` file in the `section` with class `table-toolbar`, in the `<button>` inside of the `<g class="print">` add this to the button:
+
+  - `<button onclick="display()">`
+
+  - Then, down at the bottom of the page add a new `scrip` after `</main>` with the following:
+
+    - <script>
+            function display() {window.print()}
+      </script>
+
+- The `s_and_p` table had duplicate data for the S&P 500 for April 7th and April 8th. And then after that it had missing data for a lot of days in April when I didn't open up StockScoreboard. (The `todays_sp_points` scraper only occurs when you open the app to run the code ). 
+  - Fix: Manually input S&P 500 close prices from 4/8/20 to today (5/10/20).
+    - `UPDATE s_and_p SET close_price = 2749.98 WHERE hist_date = '2020-04-08';`
+  - If you just start adding the info, it gets tacked onto the end of the table and not ordered by date. You could use `ORDER BY` in your SQL query to order it by the `hist_date` but to be safe I'm going to delete all data back to where the error started occuring and input the correct data in the right order from there:
+    - `DELETE FROM s_and_p WHERE hist_date > '2020-04-08';`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-09', 2789.82);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-13', 2761.63);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-14', 2846.06);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-15', 2783.36);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-16', 2799.55);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-17', 2874.56);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-20', 2823.16);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-21', 2736.56);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-22', 2799.31);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-23', 2797.80);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-24', 2836.74);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-27', 2878.48);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-28', 2863.39);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-29', 2939.51);`
+    - ` INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-04-30', 2912.43);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-01', 2830.71);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-04', 2842.74);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-05', 2868.44);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-06', 2848.42);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-07', 2881.19);`
+    - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-08', 2929.80);`
+    - 
 
 #### 5/9/20
 
