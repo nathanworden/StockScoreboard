@@ -54,14 +54,15 @@ def get_latest_price(stock)
   (stock[:current_data].latest_price).round(2)
 end
 
-def format_num(num)
+def format_num(num, include_dollar_sign)
+  dollar_sign = include_dollar_sign == 'no_dollar_sign' ? '' : '$'
   negative = num.to_f < 0 ? true : false
   num = num.to_f.abs
   converted = num.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
   if negative
-    '-' + '$' + converted
+    '-' + dollar_sign + converted
   else
-    '$' + converted
+    dollar_sign + converted
   end
 end
 
@@ -126,6 +127,7 @@ end
 
 post "/addposition" do
   @all_params = params
+  @all_params["commission"] = 0 if @all_params["commission"] == ""
   @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], todays_sp_points)
   # erb :didwegetit, layout: :blank
   redirect "/"

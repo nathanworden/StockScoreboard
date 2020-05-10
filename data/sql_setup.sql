@@ -1,7 +1,7 @@
 CREATE TABLE stocks (
 id serial UNIQUE NOT NULL,
 ticker text NOT NULL,
-shares integer NOT NULL,
+shares numeric(9,3) NOT NULL,
 purchase_date date NOT NULL,
 purchase_price decimal(9, 2) NOT NULL,
 commission decimal (6, 2) NOT NULL,

@@ -1,5 +1,37 @@
 DATABASE UPDATE LOG
 
+#### 5/10/20
+
+On the 'Add a Position' page, if you entered a fractional share (aka, typed in 20.5 or some other decimal number into the shares input field) you would get an error that said 'invalid input syntax for type integer: "20.5". It listed the file as `database_persistence.rb`. 
+
+What I think was happening:
+
+The schema for the stocks table looks like this:
+
+```sql
+CREATE TABLE stocks (
+id serial UNIQUE NOT NULL,
+ticker text NOT NULL,
+shares integer NOT NULL,
+purchase_date date NOT NULL,
+purchase_price decimal(9, 2) NOT NULL,
+commission decimal (6, 2) NOT NULL,
+s_and_p_at_stock_purchase_date numeric(9, 2)
+);
+```
+
+Specifically, the shares column has a data type of integer. To have fractional shares this needs to be a float. Or in SQL parlance, 'numeric' or 'decimal'. So the fix is this:
+
+Enter your psql console: ` psql -d stock_scoreboard` (or if you are logging into Heroku: `heroku pg:psql -a stock-scoreboard`)
+
+Alter the stocks table and shares column: `ALTER TABLE stocks ALTER COLUMN shares TYPE numeric(9,3);`
+
+Now when you go back and Add a Position you can do fractional shares.
+
+#### 5/9/20
+
+
+
 **4/21/20**
 
 Wanted to check what the S&P500 was on the day a stock was bought. But my iMac didn't have heroku installed yet.
