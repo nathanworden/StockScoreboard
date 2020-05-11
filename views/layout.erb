@@ -21,17 +21,17 @@
         <article class="metric">
           <h6>Total Return (%):</h6>
           <hr>
-          <p class="<%= pos_or_neg(@total_portfolio_returns_percent)%>"><%= (@total_portfolio_returns_percent * 100).round(2) %>%</p>
+          <p class="pos"><%= @total_portfolio_returns%></p>
         </article>
         <article class="metric"> 
           <h6>Total Returns ($):</h6>
           <hr>
-          <p class="<%= pos_or_neg(@total_portfolio_returns_in_dollars) %>"><%= format_num(@total_portfolio_returns_in_dollars.round(2), 'include_dollar_sign') %></p>
+          <p class="<%= pos_or_neg(@total_portfolio_returns) %>"><%= format_num(@total_portfolio_returns.round(2)) %></p>
         </article>
         <article class="metric">
           <h6>Market Value</h6>
           <hr>
-          <p><%= format_num(@total_current_portfolio_market_value, 'include_dollar_sign') %></p>
+          <p><%= format_num(@total_current_portfolio_market_value) %></p>
         </article>
         <article class="metric">
           <h6>XIRR vs. S&P 500</h6>
@@ -41,7 +41,7 @@
         <article class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
-          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points, 'include_dollar_sign').slice(1..-1) %> (<%= @todays_sp_percent =%>%)</p>
+          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points) %> (<%= @todays_sp_percent =%>%)</p>
         </article>
         <article class="metric">
           <h6>1 Day Change ($)</h6>
