@@ -39,6 +39,7 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
       </script>
 
 - The `s_and_p` table had duplicate data for the S&P 500 for April 7th and April 8th. And then after that it had missing data for a lot of days in April when I didn't open up StockScoreboard. (The `todays_sp_points` scraper only occurs when you open the app to run the code ). 
+
   - Fix: Manually input S&P 500 close prices from 4/8/20 to today (5/10/20).
     - `UPDATE s_and_p SET close_price = 2749.98 WHERE hist_date = '2020-04-08';`
   - If you just start adding the info, it gets tacked onto the end of the table and not ordered by date. You could use `ORDER BY` in your SQL query to order it by the `hist_date` but to be safe I'm going to delete all data back to where the error started occuring and input the correct data in the right order from there:
@@ -64,7 +65,9 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-06', 2848.42);`
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-07', 2881.19);`
     - `INSERT INTO s_and_p (hist_date, close_price) VALUES ('2020-05-08', 2929.80);`
+
 - The `s_and_p` table on heroku only had data from April and May. To pull in data from all the way back to 1900, I did the following:
+
   - Database dump of all Schema of `stock_scoreboard` :
     - `pg_dump stock_scoreboard > 05102020_stock_scoreboard_dump.sql`
     - In this file all the lines from the table `s_and_p` exiscted, so I copied all of those.
@@ -75,11 +78,49 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
     - That's when I pasted all the lines of S&P500 data all the way back to 1900 (from the second bullet point above) and then hit 'enter' for the newline and then a `\.` to signal I was done.
     - It gave me "`COPY 32549`", and all of that data appears to be in there now!
 
+- On the "Add a Position" If you enter the 'purchase price' with a dollar sign ($), it gives you this error: ` invalid input syntax for type numeric: "$30.28"`
+
+  - Fixed:   Fixed by substituting out all non-digits for an empty string: `@all_params["purchase-price"] = @all_params["purchase-price"].gsub(/[^\d\.]/, '')`
+
+- When adding a position in the past, the data being added to the `stocks` table in the `s_and_p_at_stock_purchase_date` is the web-scrapped amount of the current S&P500 instead of the historcial price. Examped: Added position "TWOU" with a buy date of '4/20/2020' at $30.28 and the "Return %" and "vs. S&P" columns read 0%.
+
+  - Fix: Added an `if` statement to  the `post "/addposition" do` route which checked if the current date was today. If the date is today, then we can web-scrape the current S&P500 value. If the date is in the past, then we have to query the database  and get what level it was at on that date. because
+
+  - ```ruby
+      if @all_params["purchase-date"] == Date.today
+        s_and_p_at_stock_purchase_date = todays_sp_points
+      else
+        s_and_p_at_stock_purchase_date = @storage.get_sandp_on(@all_params["purchase-date"])
+      end
+    ```
+
+  - Had to update the name of the variable at the end of this line to `s_and_p_at_stock_purchase_date` because before this was where  `todays_sp_points`  was web scraping: `@storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], s_and_p_at_stock_purchase_date)`
+
+  - Also needed to add the following to `database_persistence.rb`:
+
+  - ```ruby
+     def get_sandp_on(date)
+        sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
+        result = query(sql, date)
+    
+        result.map do |tuple|
+          tuple["close_price"]
+        end[0].to_f
+      end
+    ```
+
+
+
 #### 5/9/20
 
 - Added a 'Total Return' metric to the main homescreen. It is just the total return amount to date (positive or negative) divided by the total cost basis for the whole portfolio.
-
 - Added the ability to have the negative sign be before the dollar sign in the  `format_num(num, include_dollar_sign)` function in `stockcoreboard.rb` . Also added the ability to tell it whether to include the dollar sig or not. (Because the dollar sign is not needed for metrics such as shares or the point value of 'Today's S&P 500').
+
+#### 5/6/20
+
+When you Add a position, if you leave the 'Commission' Field blank, it gives you an 'Internal Server Error' - fixed 5/9/20
+
+Fixed by adding `@all_params["commission"] = 0 if @all_params["commission"] == ""` to `post "/addposition" do` route.
 
 **4/21/20**
 

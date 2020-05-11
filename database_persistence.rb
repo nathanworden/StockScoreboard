@@ -99,7 +99,8 @@ class DatabasePersistence
   end
 
   def tuple_to_list_hash(tuple)
-    {ticker: tuple["ticker"],
+    {id: tuple["id"],
+     ticker: tuple["ticker"],
      shares: tuple["shares"].to_f,
      purchase_date: tuple["purchase_date"],
      purchase_price: tuple["purchase_price"].to_f,
