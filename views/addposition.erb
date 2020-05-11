@@ -12,27 +12,45 @@
         </a>
       </div>
       <hr class="zig-zag">
+      <section class="session-error">
+        <%= @error if @error %>
+      </section>
       <section class="stock-info">
         <form action="/addposition" method="post">
           <div class="form-row">
             <label for="ticker">Ticker</label>
             <input type="text" name='ticker' id="ticker" value="<%= @position[:ticker] unless !@position %>"/>
           </div>
+          <div class="input-info-for-user">
+            <div class="space3"></div><p class="hide">hi</p>
+          </div>
           <div class="form-row">
             <label for="shares">Shares</label>
             <input type="text" name='shares' id="shares" value="<%= @position[:shares] unless !@position %>"/>
+          </div>
+          <div class="input-info-for-user">
+              <div class="space3"></div><p class="hide">hi</p>
           </div>
           <div class="form-row">
             <label for="purchase-date">Purchase Date</label>
             <input type="text" name='purchase-date' id="purchase-date" value="<%= @position[:purchase_date] unless !@position %>"/>
           </div>
+          <div class="input-info-for-user">
+              <div class="space3"></div><p class="visible"><i>mm/dd/yyyy</i></p>
+          </div>
           <div class="form-row">
             <label for="purchase-price">Purchase Price</label>
             <input type="text" name='purchase-price' id="purchase-price" value="<%= @position[:purchase_price] unless !@position %>"/>
           </div>
+          <div class="input-info-for-user">
+            <div class="space3"></div><p class="hide">hi</p>
+          </div>
           <div class="form-row">
             <label for="commission">Commission</label>
             <input type="text" name="commission" id="commission" value="<%= @position[:commission] unless !@position %>"/>
+          </div>
+          <div class="input-info-for-user">
+            <div class="space3"></div><p class="hide">hi</p>
           </div>
             <button type="submit">
               Add

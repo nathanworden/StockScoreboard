@@ -26,9 +26,11 @@ end
 
 def pull_market_data(all_positions, total_portfolio_cost_basis)
   @total_current_portfolio_market_value = 0
+  @previous_day_portfolio_market_value = 0
 
   all_positions.each do |stock|
     stock[:current_data] = StockQuote::Stock.quote(stock[:ticker])
+    stock[:previous_close] = stock[:current_data].previous_close
     stock[:latest_price] = get_latest_price(stock)
     stock[:one_day_change] = (stock[:current_data].change_percent * 100).round(2)
     stock[:return_dollars] = ((stock[:current_data].latest_price - stock[:purchase_price].to_f) * stock[:shares]).round(2)
@@ -37,8 +39,11 @@ def pull_market_data(all_positions, total_portfolio_cost_basis)
     # stock[:percent_portfolio] = ((stock[:cost_basis] / total_portfolio_cost_basis) * 100).round(2)
     stock[:market_value] = ((stock[:current_data].latest_price * stock[:shares])).round(2)
     @total_current_portfolio_market_value += stock[:market_value]
+
+    @previous_day_portfolio_market_value += stock[:previous_close] * stock[:shares]
     stock[:pe_ratio] = stock[:current_data].pe_ratio
     # stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
+
 
     stock[:return_vs_sandp] =  (stock[:return_percent] - s_and_p_return_since_stock_purchase_date(stock)).round(2)
   end
@@ -112,16 +117,21 @@ get "/" do
   @todays_sp_percent = todays_sp_percent
   @todays_sp_points = todays_sp_points
   @total_current_portfolio_market_value = @total_current_portfolio_market_value.round(2)
+  @one_day_change_dollars = (@total_current_portfolio_market_value - @previous_day_portfolio_market_value).round(2)
+  @one_day_change_percent = (@one_day_change_dollars / @previous_day_portfolio_market_value * 100).round(2)
   @total_portfolio_returns_in_dollars = @total_current_portfolio_market_value - @total_portfolio_cost_basis
   @total_portfolio_returns_percent = @total_portfolio_returns_in_dollars / @total_portfolio_cost_basis
 
   update_stocks_percent_portfolio(@all_positions, @total_current_portfolio_market_value)
   @all_positions = order_all_positions_by(@storage.table_sort_rule)
 
+  session[:error] = nil
+
   erb :stock_table, layout: :layout
 end
 
 get "/addposition" do 
+  @error = session[:error]
   erb :addposition, layout: :blank
 end
 
@@ -129,19 +139,26 @@ post "/addposition" do
   @all_params = params
   @all_params["commission"] = 0 if @all_params["commission"] == ""
   @all_params["purchase-price"] = @all_params["purchase-price"].gsub(/[^\d\.]/, '')
-  if @all_params["purchase-date"] == Date.today
+  @all_params["ticker"] = @all_params["ticker"].upcase
+
+  if !params["purchase-date"].match(/\d{1,2}\/\d{1,2}\/\d{4}/)
+    session[:error] = "Purchase Date must be in this format: mm/dd/yyy"
+    redirect "/addposition"
+  end
+
+  if Date.strptime(@all_params["purchase-date"], '%m/%d/%Y') == Date.today
     s_and_p_at_stock_purchase_date = todays_sp_points
   else
     s_and_p_at_stock_purchase_date = @storage.get_sandp_on(@all_params["purchase-date"])
   end
-  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], s_and_p_at_stock_purchase_date)
+  @storage.add_position(@all_params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], s_and_p_at_stock_purchase_date)
   # erb :didwegetit, layout: :blank
   redirect "/"
 end
 
 
-post "/delete-position/:ticker" do
-  @storage.delete_position(params[:ticker])
+post "/delete-position/:id" do
+  @storage.delete_position(params[:id])
   redirect "/"
 end
 

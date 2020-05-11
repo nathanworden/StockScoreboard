@@ -46,12 +46,12 @@
         <article class="metric">
           <h6>1 Day Change ($)</h6>
           <hr>
-          <p class="neg"></p>
+          <p class="<%=  pos_or_neg(@one_day_change_dollars) %>"><%= format_num(@one_day_change_dollars, 'include_dollar_sign') %></p>
         </article>
         <article class="metric">
           <h6>1 Day Change (%)</h6>
           <hr>
-          <p class="neg"></p>
+          <p class="<%= pos_or_neg(@one_day_change_percent)%>"><%= @one_day_change_percent%>%</p>
         </article>
         <article class="metric">
           <h6>Unrealized Gains</h6>
@@ -203,8 +203,8 @@
       }
     </script>
     <script>
-      function actionDropdown(ticker) {
-        document.getElementById(ticker).classList.toggle("show");
+      function actionDropdown(id) {
+        document.getElementById(id).classList.toggle("show");
       }
 
       function display() {

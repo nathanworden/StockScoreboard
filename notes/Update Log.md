@@ -1,5 +1,15 @@
 ## UPDATE LOG
 
+#### 5/11/20
+
+- Turned all ticker input into uppercase by adding`@all_params['ticker'] = @all_params['ticker'].upcase` to the `post "/addposition"` route.
+- Bug: When you enter a new position with today as the buy date, the 'vs. S&P' column says '-Infinity%'. In the stock table the `s_and_p_at_stock_purchase_date ` is being input as 0.
+  - Problem ended up being: The check for ` if @all_params["purchase-date"] == Date.today` in `post "/addposition"`wasn't working because the `@all_params["purchase-date"]` was formatted differently than the `Date.today` object. 
+  - Fix: When comparing the dates, format them so they are the same: `  if Date.strptime(@all_params["purchase-date"], '%m/%d/%Y') == Date.today`
+- Added a session error to pop up if the date is entered incorrectly.
+- Bug: When you delete a position- all other positions with the same ticker get deleted too. Want to delete based on an id instead of a ticker.
+  - Fix: Was deleting based on ticker, changed references in `database_persistence.rb`, `stock_table.erb`, and `stockscoreboard.rb` (in the `post/delete-position/:ticker` route) to be `:id` instead of `:ticker`.
+
 #### 5/10/20
 
 - Bug Fix: On the 'Add a Position' page, if you entered a fractional share (aka, typed in 20.5 or some other decimal number into the shares input field) you would get an error that said 'invalid input syntax for type integer: "20.5". It listed the file as `database_persistence.rb`. 
@@ -78,7 +88,7 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
     - That's when I pasted all the lines of S&P500 data all the way back to 1900 (from the second bullet point above) and then hit 'enter' for the newline and then a `\.` to signal I was done.
     - It gave me "`COPY 32549`", and all of that data appears to be in there now!
 
-- On the "Add a Position" If you enter the 'purchase price' with a dollar sign ($), it gives you this error: ` invalid input syntax for type numeric: "$30.28"`
+- On the "Add a Position" page If you enter the 'purchase price' with a dollar sign ($), it gives you this error: ` invalid input syntax for type numeric: "$30.28"`
 
   - Fixed:   Fixed by substituting out all non-digits for an empty string: `@all_params["purchase-price"] = @all_params["purchase-price"].gsub(/[^\d\.]/, '')`
 
@@ -109,7 +119,8 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
       end
     ```
 
-
+- The action button in the stock table wasn't working for stocks that had two entries in the table. (Clicking it resulted in nothing happening). Stocks with single entries would successfully have the 'delete' and 'edit' options drop dopw. 
+  - Fix:  The `actionDropdown()` function was being fed a `ticker` instead of an `id`. Since there are multiple stock entries with the same ticker, this wasn't uniqly identifying an element and thus returned `undefined`. In `stock_table.erb` I changed the `id` of the div with the class of `dropdown-content` to `"<%= stock[:id] %>"` (instead of `<%= stock[:ticker] %>"` And similarly changed the button with the class `dropbtn` to have it's `onlick` property be `"actionDropdown(<%= stock[:id]%>)"` (instead of `"actionDropdown(<%= stock[:ticker]%>)"`)
 
 #### 5/9/20
 

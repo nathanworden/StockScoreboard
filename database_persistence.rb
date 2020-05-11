@@ -24,9 +24,9 @@ class DatabasePersistence
     query(sql, ticker, shares, purchase_date, purchase_price, commission, s_and_p_at_stock_purchase_date)
   end
 
-  def delete_position(ticker)
-    sql = "DELETE FROM stocks WHERE ticker = $1"
-    query(sql, ticker)
+  def delete_position(id)
+    sql = "DELETE FROM stocks WHERE id = $1"
+    query(sql, id)
   end
 
   def get_position(ticker)
