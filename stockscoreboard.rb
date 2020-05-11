@@ -54,7 +54,7 @@ def get_latest_price(stock)
   (stock[:current_data].latest_price).round(2)
 end
 
-def format_num(num, include_dollar_sign)
+def format_num(num, include_dollar_sign='include_dollar_sign')
   dollar_sign = include_dollar_sign == 'no_dollar_sign' ? '' : '$'
   negative = num.to_f < 0 ? true : false
   num = num.to_f.abs
