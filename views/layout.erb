@@ -204,7 +204,7 @@
     </script>
     <script>
       function actionDropdown(ticker) {
-        return document.getElementById('sq').classList.toggle("show");
+        document.getElementById(ticker.id).classList.toggle("show");
       }
 
       function display() {
