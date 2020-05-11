@@ -19,9 +19,9 @@ class DatabasePersistence
     @db.exec_params(statement, params)
   end
 
-  def add_position(ticker, shares, purchase_date, purchase_price, commission, todays_sp_points)
+  def add_position(ticker, shares, purchase_date, purchase_price, commission, s_and_p_at_stock_purchase_date)
     sql = "INSERT INTO stocks (ticker, shares, purchase_date, purchase_price, commission, s_and_p_at_stock_purchase_date) VALUES ($1, $2, $3, $4, $5, $6)"
-    query(sql, ticker, shares, purchase_date, purchase_price, commission, todays_sp_points)
+    query(sql, ticker, shares, purchase_date, purchase_price, commission, s_and_p_at_stock_purchase_date)
   end
 
   def delete_position(ticker)
@@ -56,15 +56,14 @@ class DatabasePersistence
     end
   end
 
+  def get_sandp_on(date)
+    sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
+    result = query(sql, date)
 
-  # def get_historical_sandp(date)
-  #   sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
-  #   result = query(sql, date)
-
-  #   result.map do |tuple|
-  #     tuple["close_price"]
-  #   end
-  # end
+    result.map do |tuple|
+      tuple["close_price"]
+    end[0].to_f
+  end
 
   def add_yesterday_sandp(yesterday_sp_close)
     date = (Date.today) - 1

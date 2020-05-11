@@ -128,10 +128,17 @@ end
 post "/addposition" do
   @all_params = params
   @all_params["commission"] = 0 if @all_params["commission"] == ""
-  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], todays_sp_points)
+  @all_params["purchase-price"] = @all_params["purchase-price"].gsub(/[^\d\.]/, '')
+  if @all_params["purchase-date"] == Date.today
+    s_and_p_at_stock_purchase_date = todays_sp_points
+  else
+    s_and_p_at_stock_purchase_date = @storage.get_sandp_on(@all_params["purchase-date"])
+  end
+  @storage.add_position(params["ticker"], params["shares"], params["purchase-date"], params["purchase-price"], params["commission"], s_and_p_at_stock_purchase_date)
   # erb :didwegetit, layout: :blank
   redirect "/"
 end
+
 
 post "/delete-position/:ticker" do
   @storage.delete_position(params[:ticker])
