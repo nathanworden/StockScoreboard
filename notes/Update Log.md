@@ -9,6 +9,7 @@
 - Added a session error to pop up if the date is entered incorrectly.
 - Bug: When you delete a position- all other positions with the same ticker get deleted too. Want to delete based on an id instead of a ticker.
   - Fix: Was deleting based on ticker, changed references in `database_persistence.rb`, `stock_table.erb`, and `stockscoreboard.rb` (in the `post/delete-position/:ticker` route) to be `:id` instead of `:ticker`.
+- Added '1 Day Change ($)' and '1 Day Change (%)' for the full portfolio metrics. This was accomplished by adding `stock[:previous_close] = stock[:current_data].previous_close` to the `pull_market_data` method and adding up the previous day's portfolio's closing market value stock by stock with `@previous_day_portfolio_market_value += stock[:previous_close] * stock[:shares]`
 
 #### 5/10/20
 

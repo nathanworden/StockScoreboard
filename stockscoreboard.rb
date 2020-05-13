@@ -39,7 +39,6 @@ def pull_market_data(all_positions, total_portfolio_cost_basis)
     # stock[:percent_portfolio] = ((stock[:cost_basis] / total_portfolio_cost_basis) * 100).round(2)
     stock[:market_value] = ((stock[:current_data].latest_price * stock[:shares])).round(2)
     @total_current_portfolio_market_value += stock[:market_value]
-
     @previous_day_portfolio_market_value += stock[:previous_close] * stock[:shares]
     stock[:pe_ratio] = stock[:current_data].pe_ratio
     # stock[:return_vs_sandp] =  (stock[:return_percent] - calculate_sandp_on_purchase_date(stock)).round(2)
