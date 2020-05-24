@@ -6,6 +6,7 @@ require "stock_quote"
 require 'rbconfig'
 require_relative "./data/s_and_p_data/scrape_todays_s_and_p.rb"
 require 'date'
+# require 'alpaca/trade/api'
 
 configure(:development) do
   require "sinatra/reloader"
@@ -23,6 +24,13 @@ end
 def pos_or_neg(value)
   value.to_f >= 0 ? "pos" : "neg"
 end
+
+# def pull_batch_market_data(all_positions)                 # This was an experiment to try and see if it was possible to get the page to load faster by batching the requests all into one rather than doing them one by one. Eyeballing it it didn't seem to improve the speed. Experiemnt done on 5.14.20
+#   output = []
+#   all_positions.each {|stock| output << stock[:ticker]}
+#   stock_objects = StockQuote::Stock.quote(output)
+#   stock_objects.map {|stock| stock.latest_price}
+# end
 
 def pull_market_data(all_positions, total_portfolio_cost_basis)
   @total_current_portfolio_market_value = 0

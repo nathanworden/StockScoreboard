@@ -6,6 +6,7 @@ gem "sinatra-contrib"
 gem "erubis"
 gem "pg"
 gem "nokogiri"
+gem "alpaca-trade-api"
 
 
 ruby "2.6.3"
