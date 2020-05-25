@@ -1,5 +1,13 @@
 ## UPDATE LOG
 
+#### 5/24/20
+
+- Check out the logo capability: `amzn = StockQuote::Stock.logo('estc')`
+
+#### 5/23/20
+
+- Created new PostgreSQL table for Time Weighted Returns
+
 #### 5/11/20
 
 - Turned all ticker input into uppercase by adding`@all_params['ticker'] = @all_params['ticker'].upcase` to the `post "/addposition"` route.
@@ -113,7 +121,7 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
      def get_sandp_on(date)
         sql = "SELECT close_price from s_and_p WHERE hist_date = $1"
         result = query(sql, date)
-    
+      
         result.map do |tuple|
           tuple["close_price"]
         end[0].to_f
@@ -121,6 +129,7 @@ s_and_p_at_stock_purchase_date numeric(9, 2)
     ```
 
 - The action button in the stock table wasn't working for stocks that had two entries in the table. (Clicking it resulted in nothing happening). Stocks with single entries would successfully have the 'delete' and 'edit' options drop dopw. 
+  
   - Fix:  The `actionDropdown()` function was being fed a `ticker` instead of an `id`. Since there are multiple stock entries with the same ticker, this wasn't uniqly identifying an element and thus returned `undefined`. In `stock_table.erb` I changed the `id` of the div with the class of `dropdown-content` to `"<%= stock[:id] %>"` (instead of `<%= stock[:ticker] %>"` And similarly changed the button with the class `dropbtn` to have it's `onlick` property be `"actionDropdown(<%= stock[:id]%>)"` (instead of `"actionDropdown(<%= stock[:ticker]%>)"`)
 
 #### 5/9/20

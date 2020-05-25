@@ -23,3 +23,18 @@ sort_rule text
 
 INSERT INTO table_sort_rule (sort_rule)
 VALUES ('percent_portfolio');
+
+CREATE TABLE time_weighted_return (
+id serial UNIQUE NOT NULL,
+purchase_date date NOT NULL,
+ending_portfolio_value decimal(12, 2) NOT NULL,
+cash_flow decimal(12, 2) NOT NULL,
+portfolio_value_after_cash_flow decimal(12, 2) NOT NULL,
+holding_period_return decimal(5, 5) NOT NULL,
+time_weighted_return decimal(5, 5) NOT NULL
+);
+
+
+INSERT INTO time_weighted_return (
+
+);
