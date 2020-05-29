@@ -30,11 +30,11 @@ purchase_date date NOT NULL,
 ending_portfolio_value decimal(12, 2) NOT NULL,
 cash_flow decimal(12, 2) NOT NULL,
 portfolio_value_after_cash_flow decimal(12, 2) NOT NULL,
-holding_period_return decimal(5, 5) NOT NULL,
-time_weighted_return decimal(5, 5) NOT NULL
+holding_period_return decimal(12, 5) NOT NULL,
+time_weighted_return decimal(12, 5) NOT NULL
 );
 
 
-INSERT INTO time_weighted_return (
-
-);
+INSERT INTO time_weighted_return (id, purchase_date, ending_portfolio_value, cash_flow, portfolio_value_after_cash_flow, holding_period_return, time_weighted_return) 
+VALUES ()
+;

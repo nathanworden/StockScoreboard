@@ -129,6 +129,11 @@ get "/" do
   @total_portfolio_returns_in_dollars = @total_current_portfolio_market_value - @total_portfolio_cost_basis
   @total_portfolio_returns_percent = @total_portfolio_returns_in_dollars / @total_portfolio_cost_basis
 
+  @holding_period_return = ((@total_current_portfolio_market_value / @storage.previous_portfolio_value_after_cash_flow) - 1)
+  @time_weighted_return_to_date = (((1 + @holding_period_return) * (1 + @storage.previous_time_weighted_return / 100) - 1) * 100).round(2)
+
+  # "holding period return: #{@holding_period_return}  previous time weighed return: #{@storage.previous_time_weighted_return}  #{@time_weighted_return_to_date}"
+
   update_stocks_percent_portfolio(@all_positions, @total_current_portfolio_market_value)
   @all_positions = order_all_positions_by(@storage.table_sort_rule)
 

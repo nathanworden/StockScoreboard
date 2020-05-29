@@ -85,6 +85,17 @@ class DatabasePersistence
     query(sql, rule)
   end
 
+  def previous_portfolio_value_after_cash_flow
+    sql = 'SELECT portfolio_value_after_cash_flow FROM time_weighted_return WHERE purchase_date = (SELECT MAX(purchase_date) FROM time_weighted_return);'
+    result = query(sql)
+    result[0]["portfolio_value_after_cash_flow"].to_f
+  end
+
+  def previous_time_weighted_return
+    sql = 'SELECT time_weighted_return FROM time_weighted_return WHERE purchase_date = (SELECT MAX(purchase_date) FROM time_weighted_return);'
+    result = query(sql)[0]["time_weighted_return"].to_f
+  end
+
   def table_sort_rule
     sql = "SELECT * from table_sort_rule"
     result = query(sql)
