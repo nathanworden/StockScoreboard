@@ -39,6 +39,11 @@
           <p><%= format_num(@total_current_portfolio_market_value, 'include_dollar_sign') %></p>
         </article>
         <article class="metric">
+          <h6>Total Cost Basis</h6>
+          <hr>
+          <p><%= format_num(@total_portfolio_cost_basis, 'include_dollar_sign') %></p>
+        </article>
+        <article class="metric">
           <h6>Return vs. S&P 500</h6>
           <hr>
           <p class="pos"></p>
