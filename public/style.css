@@ -49,6 +49,18 @@ main {
   /*display: flex;*/
 }
 
+h1 {
+  text-align: center;
+  font-family: arial;
+}
+
+#canvas-container {
+  width: 300px;
+  height: 300px;
+  margin: auto;
+  margin-top: 50px;
+}
+
 /*main section {
   padding: 0 0 0 60px;
 }*/
