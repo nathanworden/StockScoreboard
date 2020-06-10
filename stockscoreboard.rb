@@ -142,6 +142,10 @@ get "/" do
   erb :stock_table, layout: :layout
 end
 
+get "/allocation" do
+  erb :allocation, layout: :layout
+end
+
 get "/addposition" do 
   @error = session[:error]
   erb :addposition, layout: :blank
