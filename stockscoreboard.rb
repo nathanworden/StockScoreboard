@@ -25,13 +25,6 @@ def pos_or_neg(value)
   value.to_f >= 0 ? "pos" : "neg"
 end
 
-# def pull_batch_market_data(all_positions)                 # This was an experiment to try and see if it was possible to get the page to load faster by batching the requests all into one rather than doing them one by one. Eyeballing it it didn't seem to improve the speed. Experiemnt done on 5.14.20
-#   output = []
-#   all_positions.each {|stock| output << stock[:ticker]}
-#   stock_objects = StockQuote::Stock.quote(output)
-#   stock_objects.map {|stock| stock.latest_price}
-# end
-
 def pull_market_data(all_positions, total_portfolio_cost_basis)
   @total_current_portfolio_market_value = 0
   @previous_day_portfolio_market_value = 0
@@ -82,25 +75,6 @@ def s_and_p_return_since_stock_purchase_date(stock)
   ((todays_sp_points.to_f - stock[:s_and_p_at_stock_purchase_date]) / stock[:s_and_p_at_stock_purchase_date] * 100)
 end
 
-# def calculate_sandp_on_purchase_date(stock)
-#   datestr = create_date_str
-#   if stock[:purchase_date] == datestr
-#     todays_sp_percent.to_f
-#   else
-#     sandp_at_time_of_stock_purchase = @storage.get_historical_sandp(stock[:purchase_date])[0].to_f
-#     (((todays_sp_points.to_f - sandp_at_time_of_stock_purchase) / sandp_at_time_of_stock_purchase) * 100).round(2)
-#   end
-# end
-
-# def create_date_str
-#   date = Date.today
-#   month = date.mon.to_s
-#   monthday = date.mday.to_s
-#   month.length == 1 ? month = "0" + month : month
-#   monthday.length == 1 ? monthday = "0" + month : monthday
-#   "#{date.year}-#{month}-#{monthday}"
-# end
-
 def order_all_positions_by(rule)
   @all_positions.sort_by! do |stock|
     stock[rule]
@@ -143,7 +117,7 @@ get "/" do
 end
 
 get "/allocation" do
-  erb :allocation, layout: :layout
+  erb :allocation, layout: :blank
 end
 
 get "/addposition" do 
@@ -188,26 +162,10 @@ post "/edit-position/:ticker" do
   erb :addposition, layout: :blank
 end
 
-
+# Example of calls you can make with StockQuote gem:
 
 # amzn = StockQuote::Stock.quote('amzn')
 # p amzn.company_name
 # p amzn.latest_price
 # p amzn.latest_source
 # p amzn.ytd_change
-
-# puts
-
-# appf = StockQuote::Stock.quote('appf')
-# p appf.company_name
-# p appf.latest_price
-# p appf.latest_source
-# p appf.ytd_change
-
-# puts
-
-# vfiax = StockQuote::Stock.quote('vfiax')
-# p vfiax.company_name
-# p vfiax.latest_price
-# p vfiax.latest_source
-# p vfiax.ytd_change

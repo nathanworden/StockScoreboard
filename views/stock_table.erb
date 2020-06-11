@@ -1,36 +1,217 @@
-<ul class="stock-table-body">
-  <% @all_positions.each do |stock| %>
-    <li class="stock-row">
-      <div class='ticker'>
-        <div class='company-ticker'><%= stock[:ticker] %></div>
-        <div class='full-company-name'><%= stock[:current_data].company_name %></div>
+<section class="table-toolbar">
+  <div class="search-print">
+    <label for="search">Search:</label>
+    <input type="search" id="search" name="s">
+    <button class="edit-table-columns">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M18 14.45v6.55h-16v-12h6.743l1.978-2h-10.721v16h20v-10.573l-2 2.023zm1.473-10.615l1.707 1.707-9.281 9.378-2.23.472.512-2.169 9.292-9.388zm-.008-2.835l-11.104 11.216-1.361 5.784 5.898-1.248 11.103-11.218-4.536-4.534z"/>
+      </svg>
+      <p>Edit table columns</p>
+    </button>
+    <g class="print">
+      <p>Print:</p>
+      <button onclick="display()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" transform="rotate(180)"><path d="M24 5h-4v-5h-16v5h-4v13h4v6h9.519c2.947 0 6.029-3.577 6.434-6h4.047v-13zm-18-3h12v3h-12v-3zm8.691 16.648s1.469 3.352-2 3.352h-6.691v-8h12v2.648c0 3.594-3.309 2-3.309 2zm6.809-10.648c-.276 0-.5-.224-.5-.5s.224-.5.5-.5.5.224.5.5-.224.5-.5.5zm-5.5 9h-8v-1h8v1zm-3 1h-5v1h5v-1z"/>
+        </svg>
+      </button>
+    </g>
+    <p class='updated-at'>Development started at 04:32 PM EDT on Tues, March 10th 2020</p>
+  </div>
+  <form action="/addposition" method="get">
+    <button class="add-position">
+      <h2>Add a Position</h2>
+    </button>
+  </form>
+</section>
+<section class="table">
+  <div class='table-grid-container'>
+    <div class='stock-table-header'>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="ticker" name="ticker"><p>Ticker</p></button>
+        </form>
       </div>
-      <div class='price'><p><%= format_num(stock[:latest_price], 'include_dollar_sign') %></p></div>
-      <div class='one-day-change <%= pos_or_neg(stock[:one_day_change]) %>'><p><%= stock[:one_day_change] %>%</p></div>
-      <div class='buy-price'><p><%= format_num(stock[:purchase_price], 'include_dollar_sign') %></p></div>
-      <div class='buy-date'><p><%= stock[:purchase_date] %></p></div>
-      <div class='shares'><p><%= format_num(stock[:shares], 'no_dollar_sign') %></p></div>
-      <div class='return-percentage <%= pos_or_neg(stock[:return_percent]) %>'><p><%= stock[:return_percent] %>%</p></div>
-      <div class='vs-sp <%= pos_or_neg(stock[:return_vs_sandp]) %>'><p><%= stock[:return_vs_sandp] %>%</p></div>
-      <div class='total-cost-basis'><p><%= format_num(stock[:cost_basis], 'include_dollar_sign') %></p></div>
-      <div class='percent-portfolio'><p><%= ((stock[:market_value] / @total_current_portfolio_market_value) * 100).round(2) %>%</p></div>
-      <div class='return-dollars <%= pos_or_neg(stock[:return_dollars]) %>'><p><%= format_num(stock[:return_dollars], 'include_dollar_sign') %></p></div>
-      <div class='market-value'><p><%= format_num(stock[:market_value], 'include_dollar_sign') %></p></div>
-      <div class='pe'><p><%= stock[:pe_ratio] %></p></div>
-      <div class='actions'>
-          <button onclick="actionDropdown(<%= stock[:id]%>)" class="dropbtn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
-            <path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
-          </button>
-          <div id="<%= stock[:id] %>" class="dropdown-content">
-            <form action="/delete-position/<%= stock[:id] %>" method="post">
-              <button class='delete'>Delete</button>
-              </form>
-            <form action="/edit-position/<%= stock[:ticker] %>" method="post">
-              <button class='edit'>Edit Position</button>
-            </form>
-          </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="latest_price" name="latest_price"><p>Price</p></button>
+        </form>
       </div>
-    </li>
-  <% end %>
-</ul>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="one_day_change" name="one_day_change"><p>1-Day Change</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="purchase_price" name="purchase_price"><p>Buy Price</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="purchase_date" name="purchase_date"><p>Buy Date</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="shares" name="shares"><p>Shares</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="return_percent" name="return_percent"><p>Return (%)</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="return_vs_sandp" name="return_vs_sandp"><p>vs. S&P</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="cost_basis" name="cost_basis"><p>Total Cost Basis</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="percent_portfolio" name="percent_portfolio"><p>% Portfolio</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="return_dollars" name="return_dollars"><p>Return ($)</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" name='market_value' value='market_value'><p>Market Value</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <form action='/' method="post">
+          <button type="submit" value="pe" name="pe"><p>P/E</p></button>
+        </form>
+      </div>
+      <div class='col-head'>
+        <p>Actions</p>
+      </div>
+    </div>
+      <ul class="stock-table-body">
+        <% @all_positions.each do |stock| %>
+          <li class="stock-row">
+            <div class='ticker'>
+              <div class='company-ticker'><%= stock[:ticker] %></div>
+              <div class='full-company-name'><%= stock[:current_data].company_name %></div>
+            </div>
+            <div class='price'><p><%= format_num(stock[:latest_price], 'include_dollar_sign') %></p></div>
+            <div class='one-day-change <%= pos_or_neg(stock[:one_day_change]) %>'><p><%= stock[:one_day_change] %>%</p></div>
+            <div class='buy-price'><p><%= format_num(stock[:purchase_price], 'include_dollar_sign') %></p></div>
+            <div class='buy-date'><p><%= stock[:purchase_date] %></p></div>
+            <div class='shares'><p><%= format_num(stock[:shares], 'no_dollar_sign') %></p></div>
+            <div class='return-percentage <%= pos_or_neg(stock[:return_percent]) %>'><p><%= stock[:return_percent] %>%</p></div>
+            <div class='vs-sp <%= pos_or_neg(stock[:return_vs_sandp]) %>'><p><%= stock[:return_vs_sandp] %>%</p></div>
+            <div class='total-cost-basis'><p><%= format_num(stock[:cost_basis], 'include_dollar_sign') %></p></div>
+            <div class='percent-portfolio'><p><%= ((stock[:market_value] / @total_current_portfolio_market_value) * 100).round(2) %>%</p></div>
+            <div class='return-dollars <%= pos_or_neg(stock[:return_dollars]) %>'><p><%= format_num(stock[:return_dollars], 'include_dollar_sign') %></p></div>
+            <div class='market-value'><p><%= format_num(stock[:market_value], 'include_dollar_sign') %></p></div>
+            <div class='pe'><p><%= stock[:pe_ratio] %></p></div>
+            <div class='actions'>
+              <button onclick="actionDropdown(<%= stock[:id]%>)" class="dropbtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                <path d="M24 13.616v-3.232c-1.651-.587-2.694-.752-3.219-2.019v-.001c-.527-1.271.1-2.134.847-3.707l-2.285-2.285c-1.561.742-2.433 1.375-3.707.847h-.001c-1.269-.526-1.435-1.576-2.019-3.219h-3.232c-.582 1.635-.749 2.692-2.019 3.219h-.001c-1.271.528-2.132-.098-3.707-.847l-2.285 2.285c.745 1.568 1.375 2.434.847 3.707-.527 1.271-1.584 1.438-3.219 2.02v3.232c1.632.58 2.692.749 3.219 2.019.53 1.282-.114 2.166-.847 3.707l2.285 2.286c1.562-.743 2.434-1.375 3.707-.847h.001c1.27.526 1.436 1.579 2.019 3.219h3.232c.582-1.636.75-2.69 2.027-3.222h.001c1.262-.524 2.12.101 3.698.851l2.285-2.286c-.744-1.563-1.375-2.433-.848-3.706.527-1.271 1.588-1.44 3.221-2.021zm-12 2.384c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg>
+              </button>
+              <div id="<%= stock[:id] %>" class="dropdown-content">
+                <form action="/delete-position/<%= stock[:id] %>" method="post">
+                  <button class='delete'>Delete</button>
+                </form>
+                <form action="/edit-position/<%= stock[:ticker] %>" method="post">
+                  <button class='edit'>Edit Position</button>
+                </form>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+  </div>
+</section>
+
+
+    <script>
+      let balancesTable = document.getElementById('the-actual-yield');
+
+      let optionHeading = document.querySelector('.option-heading');
+      optionHeading.addEventListener('click', function(event) {
+        let h5s = event.currentTarget.children;
+        h5s = [].slice.call(h5s);
+        h5s.forEach(h5 => {
+          h5.classList.remove('active');
+        })
+        event.target.classList.add('active');
+
+        let yieldDiv = document.getElementById('yield-div');
+        let nowInYieldDiv = yieldDiv.children[0];
+        console.log(nowInYieldDiv);
+
+        if (event.target.textContent === 'Allocation') {
+          let allocationPage = document.createElement("div");
+          let h1 = document.createElement("h1");
+          let h1Content = document.createTextNode("Allocation");
+          h1.appendChild(h1Content);
+          let div = document.createElement("div");
+          div.setAttribute('id', 'canvas-container');
+          let canvas = document.createElement("canvas");
+          canvas.setAttribute('id', 'allocation-canvas');
+          canvas.setAttribute('width', '300');
+          canvas.setAttribute('height', '300');
+          div.appendChild(canvas);
+
+
+          allocationPage.appendChild(h1);
+          allocationPage.appendChild(div);
+
+          nowInYieldDiv.replaceWith(allocationPage);
+
+            const doughCanvas = document.getElementById("allocation-canvas");
+  const ctx = doughCanvas.getContext("2d");
+
+  let colors = ['#4CAF50', '#00BCD4', '#E91E63', '#FFC107', '#9E9E9E', '#CDDC39'];
+  let angles = [Math.PI * 0.3, Math.PI * 0.7, Math.PI * 0.2, Math.PI * 0.4, Math.PI * 0.4];
+  
+  let beginAngle = 0;
+  let endAngle = 0;
+  
+  // Create pie chart pieces
+  for(let i = 0; i < angles.length; i = i + 1) {
+    beginAngle = endAngle;
+    endAngle = endAngle + angles[i];
+    
+    ctx.beginPath();
+    ctx.fillStyle = colors[i % colors.length];
+    
+    ctx.moveTo(150, 150);
+    ctx.arc(150, 150, 150, beginAngle, endAngle);
+    ctx.lineTo(150, 150);
+    ctx.fill();
+  }
+
+  // Cover center of pie with a smaller white circle ;)
+  ctx.beginPath();
+  ctx.fillStyle = '#FFFFFF';
+  ctx.moveTo(150, 150);
+  ctx.arc(150, 150, 80, 0, 360);
+  ctx.lineTo(150, 150);
+  ctx.fill();
+         } else if (event.target.textContent === 'Balances') {
+           nowInYieldDiv.replaceWith(balancesTable);
+
+        } else if (event.target.textContent === 'Performance') {
+          let performancePage = document.createElement("div");
+          let h1 = document.createElement("h1");
+          let h1Content = document.createTextNode("Performane");
+          h1.appendChild(h1Content);
+          performancePage.appendChild(h1);
+          nowInYieldDiv.replaceWith(performancePage);
+        }
+      });
+    </script>
+
+
+

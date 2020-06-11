@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Stock Scoreboard</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <nav class="topnav" id="myTopnav">
+        <a href="#"><h4>How to Invest</h4></a>
+        <a href="#"><h4>Formulas</h4></a>
+        <a href="#"><h4>Learn</h4></a>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+    </nav>
+    <hr class="zig-zag">
+    <header>
+      <section class="metrics">
+        <article class="metric">
+          <h6>Time Weighted Return:</h6>
+          <hr>
+          <p class="<%= pos_or_neg(@time_weighted_return_to_date) %>"><%= @time_weighted_return_to_date %>%</p>
+        </article>
+        <article class="metric">
+          <h6>Simple Return (%):</h6>
+          <hr>
+          <p class="<%= pos_or_neg(@total_portfolio_returns_percent)%>"><%= (@total_portfolio_returns_percent * 100).round(2) %>%</p>
+        </article>
+        <article class="metric"> 
+          <h6>Total Returns ($):</h6>
+          <hr>
+          <p class="<%= pos_or_neg(@total_portfolio_returns_in_dollars) %>"><%= format_num(@total_portfolio_returns_in_dollars.round(2), 'include_dollar_sign') %></p>
+        </article>
+        <article class="metric">
+          <h6>Market Value</h6>
+          <hr>
+          <p><%= format_num(@total_current_portfolio_market_value, 'include_dollar_sign') %></p>
+        </article>
+        <article class="metric">
+          <h6>Total Cost Basis</h6>
+          <hr>
+          <p><%= format_num(@total_portfolio_cost_basis, 'include_dollar_sign') %></p>
+        </article>
+        <article class="metric">
+          <h6>Return vs. S&P 500</h6>
+          <hr>
+          <p class="pos"></p>
+        </article>
+        <article class="metric">
+          <h6>Today's S&P 500</h6>
+          <hr>
+          <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points, 'include_dollar_sign').slice(1..-1) %> (<%= @todays_sp_percent =%>%)</p>
+        </article>
+        <article class="metric">
+          <h6>1 Day Change ($)</h6>
+          <hr>
+          <p class="<%=  pos_or_neg(@one_day_change_dollars) %>"><%= format_num(@one_day_change_dollars, 'include_dollar_sign') %></p>
+        </article>
+        <article class="metric">
+          <h6>1 Day Change (%)</h6>
+          <hr>
+          <p class="<%= pos_or_neg(@one_day_change_percent)%>"><%= @one_day_change_percent%>%</p>
+        </article>
+        <article class="metric">
+          <h6>Unrealized Gains</h6>
+          <hr>
+          <p class="pos"></p>
+        </article>
+        <article class="metric">
+          <h6>Realized Gains</h6>
+          <hr>
+          <p class="neg"></p>
+        </article>
+      </section>
+      <section class='list-control-sidebar'>
+        <form class='list-controls'>
+            <button class="editlist">
+              <g>
+                <svg viewBox="0 0 24 24">        
+                  <path d="M19.4 7.34L16.66 4.6A2 2 0 0 0 14 4.53l-9 9a2 2 0 0 0-.57 1.21L4 18.91a1 1 0 0 0 .29.8A1 1 0 0 0 5 20h.09l4.17-.38a2 2 0 0 0 1.21-.57l9-9a1.92 1.92 0 0 0-.07-2.71zM9.08 17.62l-3 .28.27-3L12 9.32l2.7 2.7zM16 10.68L13.32 8l1.95-2L18 8.73z" />
+                </svg>
+                <p>Edit list</p>
+              </g>
+          </button>
+          <button class="editlist">
+            <g>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
+                <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/>
+              </svg>
+              <p>List info</p>
+            </g>
+          </button>
+        </form>
+      </section>
+    </header>
+    <main>
+      <section class="option-heading">
+        <h5 class="active page-tab">Balances</h5>
+        <h5 class="page-tab">Performance</h5>
+        <h5 class="page-tab">
+          <form action="/allocation" method="get">
+            <button>Allocation</button>
+          </form>
+        </h5>
+      </section>
+      <hr>
+      <section class="table-toolbar">
+        <div class="search-print">
+          <label for="search">Search:</label>
+          <input type="search" id="search" name="s">
+          <button class="edit-table-columns">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path d="M18 14.45v6.55h-16v-12h6.743l1.978-2h-10.721v16h20v-10.573l-2 2.023zm1.473-10.615l1.707 1.707-9.281 9.378-2.23.472.512-2.169 9.292-9.388zm-.008-2.835l-11.104 11.216-1.361 5.784 5.898-1.248 11.103-11.218-4.536-4.534z"/>
+            </svg>
+            <p>Edit table columns</p>
+          </button>
+          <g class="print">
+            <p>Print:</p>
+            <button onclick="display()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" transform="rotate(180)"><path d="M24 5h-4v-5h-16v5h-4v13h4v6h9.519c2.947 0 6.029-3.577 6.434-6h4.047v-13zm-18-3h12v3h-12v-3zm8.691 16.648s1.469 3.352-2 3.352h-6.691v-8h12v2.648c0 3.594-3.309 2-3.309 2zm6.809-10.648c-.276 0-.5-.224-.5-.5s.224-.5.5-.5.5.224.5.5-.224.5-.5.5zm-5.5 9h-8v-1h8v1zm-3 1h-5v1h5v-1z"/>
+              </svg>
+            </button>
+          </g>
+          <p class='updated-at'>Development started at 04:32 PM EDT on Tues, March 10th 2020</p>
+        </div>
+        <form action="/addposition" method="get">
+          <button class="add-position">
+            <h2>Add a Position</h2>
+          </button>
+        </form>
+      </section>
+      <section class="table">
+        <div class='table-grid-container'>
+          <div class='stock-table-header'>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="ticker" name="ticker"><p>Ticker</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="latest_price" name="latest_price"><p>Price</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="one_day_change" name="one_day_change"><p>1-Day Change</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="purchase_price" name="purchase_price"><p>Buy Price</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="purchase_date" name="purchase_date"><p>Buy Date</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="shares" name="shares"><p>Shares</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_percent" name="return_percent"><p>Return (%)</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_vs_sandp" name="return_vs_sandp"><p>vs. S&P</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="cost_basis" name="cost_basis"><p>Total Cost Basis</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="percent_portfolio" name="percent_portfolio"><p>% Portfolio</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="return_dollars" name="return_dollars"><p>Return ($)</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" name='market_value' value='market_value'><p>Market Value</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <form action='/' method="post">
+                <button type="submit" value="pe" name="pe"><p>P/E</p></button>
+              </form>
+            </div>
+            <div class='col-head'>
+              <p>Actions</p>
+            </div>
+          </div>
+          <%= yield %>
+        </div>
+      </section>
+    </main>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "topnav") {
+          x.className += " responsive";
+        } else {
+          x.className = "topnav";
+        }
+      }
+    </script>
+    <script>
+      function actionDropdown(id) {
+        document.getElementById(id).classList.toggle("show");
+      }
+
+      function display() {
+        window.print()
+      }
+    </script>
+  </body>
+</html>
