@@ -1,5 +1,9 @@
 ## Stock Scorecard things to fix
 
+### 6/13/20
+
+If you try and open the app but don't have internet, you get a `SocketError`. "Faild to open TCP connection to www.marketwatch.com:443 (getaddrinfo: codename nor servname provided, or not known) file: http:rb. Location: rescue in block in connect. Line: 949"
+
 #### 5/19/20
 
 When you click 'edit' on a stock and it takes you to the 'Add Position' page, once you edit it and click 'Add' it creates a new position in the table instead of editing the current one.
