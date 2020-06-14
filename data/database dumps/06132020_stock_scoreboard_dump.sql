@@ -32741,6 +32741,7 @@ COPY public.stocks (id, ticker, shares, purchase_date, purchase_price, commissio
 97	PRU	20.000	2020-06-04	64.70	0.00	3112.35
 98	BA	15.000	2020-06-08	229.00	0.00	3219.98
 99	PRU	50.000	2020-06-08	73.00	0.00	3219.91
+100	RDFN	4.000	2020-06-12	32.76	0.00	3002.10
 \.
 
 
@@ -32773,7 +32774,7 @@ COPY public.time_weighted_return (id, purchase_date, ending_portfolio_value, cas
 -- Name: stocks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: nathanworden
 --
 
-SELECT pg_catalog.setval('public.stocks_id_seq', 99, true);
+SELECT pg_catalog.setval('public.stocks_id_seq', 100, true);
 
 
 --
