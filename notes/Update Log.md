@@ -1,5 +1,19 @@
 ## UPDATE LOG
 
+### 6/17/20
+
+Importing and Exporing Heroku PostGres Databases:
+
+https://devcenter.heroku.com/articles/heroku-postgres-import-export
+
+o export the data from your Heroku Postgres database, create a new backup and download it:
+
+`heroku pg:backups:capture -a stock-scoreboard`
+
+`heroku pg:backups:download -a stock-scoreboard`
+
+This created a file called `latest.dump` and was just a bunch of numbers. I think it is the compresed version. Didn't actually figure out how to make a database dump like pg_dump. But keep exploring the above link.
+
 #### 5/29/20
 
 - Created the `time_weighted_return` table on the heroku app
