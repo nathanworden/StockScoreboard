@@ -132,7 +132,7 @@ post "/addposition" do
   @all_params["ticker"] = @all_params["ticker"].upcase
 
   if !params["purchase-date"].match(/\d{1,2}\/\d{1,2}\/\d{4}/)
-    session[:error] = "Purchase Date must be in format: mm/dd/yyyy"
+    session[:error] = "Purchase Date must be in format: mm/dd/yyy"
     redirect "/addposition"
   end
 
