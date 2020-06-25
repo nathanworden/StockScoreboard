@@ -22,6 +22,24 @@
     </button>
   </form>
 </section>
+<section class="edit-table-column-options">
+  <form>
+    <fieldset>
+      <label><input type="checkbox" checked/>Price</label>
+      <label><input type="checkbox" checked/>1-Day Change</label>
+      <label><input type="checkbox" checked/>Buy Price</label>
+      <label><input type="checkbox" checked/>Buy Date</label>
+      <label><input type="checkbox" checked/>Shares</label>
+      <label><input type="checkbox" checked/>Return(%)</label>
+      <label><input type="checkbox" checked/>vs. S&P</label>
+      <label><input type="checkbox" checked/>Total Cost Basis</label>
+      <label><input type="checkbox" checked/>% Portfolio</label>
+      <label><input type="checkbox" checked/>Return ($)</label>
+      <label><input type="checkbox" checked/>Market Value</label>
+      <label><input type="checkbox" checked/>P/E</label>
+    </fieldset>
+  </form>
+</section>
 <section class="table">
   <div class='table-grid-container'>
     <div class='stock-table-header'>
@@ -212,6 +230,18 @@
             performancePage.appendChild(h1);
             nowInYieldDiv.replaceWith(performancePage);
           }
+      });
+    </script>
+    <script>
+      // Messing with jQuery and the Edit Table columns button
+
+      $(function() {
+
+        $('.edit-table-columns').on("click", function(event) {
+          event.preventDefault();
+
+          $('.edit-table-column-options').slideToggle();
+        })
       });
     </script>
 

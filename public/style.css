@@ -561,6 +561,19 @@ main hr {
   margin: 0;
 }
 
+.edit-table-column-options {
+  color: red;
+  display: none;
+  text-align: center;
+  margin: 5px 0 5px 0;
+}
+
+.edit-table-column-options label {
+  color: black;
+  font-size: 12px;
+
+}
+
 .option-heading {
   display: flex;
 }
