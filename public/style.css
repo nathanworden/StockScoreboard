@@ -83,6 +83,7 @@ article {
 
 button {
   cursor: pointer;
+  border: 1px solid #8C8C8C;
 }
 
 section {
@@ -140,6 +141,14 @@ button p {
   background-color: #8c8c8c;
   border: none;
   /*padding: 6px 0px;*/
+}
+
+.list-info {
+  display: inline-block;
+  display: flex;
+  width: 100px;
+  background-color: #8c8c8c;
+  border: none;
 }
 
 header g {
