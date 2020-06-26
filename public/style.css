@@ -106,11 +106,14 @@ p {
 }
 
 .metrics {
+  height: 185px;
   flex: 9;
+
 }
 
 .list-control-sidebar {
   min-width: 95px;
+  height: 185px;
   flex: 1;
 }
 
@@ -149,6 +152,23 @@ button p {
   width: 100px;
   background-color: #8c8c8c;
   border: none;
+}
+
+.editlist:focus {
+  outline: none;
+}
+
+.list-info:focus {
+  outline: none;
+}
+
+.stay-box {
+  margin: 0 17px 0 0;
+  float: right;
+}
+
+#edit-list-checkbox-options {
+  display: none;
 }
 
 header g {

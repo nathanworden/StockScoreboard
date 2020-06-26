@@ -25,7 +25,7 @@
 <!--           <p class="<%= pos_or_neg(@time_weighted_return_to_date) %>"><%= @time_weighted_return_to_date %>%</p> -->
         </article>
         <article class="metric">
-          <h6>Simple Return (%):</h6>
+          <h6>Total Return (%):</h6>
           <hr>
           <p class="<%= pos_or_neg(@total_portfolio_returns_percent)%>"><%= (@total_portfolio_returns_percent * 100).round(2) %>%</p>
         </article>
@@ -77,6 +77,20 @@
       </section>
       <section class='list-control-sidebar'>
         <form action="#" class='list-controls'>
+          <fieldset id="edit-list-checkbox-options">
+            <label><input type="checkbox" checked/>Time Weighted Return</label>
+            <label><input type="checkbox" checked/>Total Return (%)</label>
+            <label><input type="checkbox" checked/>Total Return ($)</label>
+            <label><input type="checkbox" checked/>Market Value</label>
+            <label><input type="checkbox" checked/>Total Cost Basis</label>
+            <label><input type="checkbox" checked/>Return vs. S&P 500</label>
+            <label><input type="checkbox" checked/>Today's S&P 500</label>
+            <label><input type="checkbox" checked/>1 Day Change ($)</label>
+            <label><input type="checkbox" checked/>1 Day Change (%)</label>
+            <label><input type="checkbox" checked/>Unrealized Gains</label>
+            <label><input type="checkbox" checked/>Realized Gains</label>
+          </fieldset>
+          <div class="stay-box">
             <button class="editlist">
               <g>
                 <svg viewBox="0 0 24 24">        
@@ -84,16 +98,17 @@
                 </svg>
                 <p>Edit list</p>
               </g>
-          </button>
-          <button class="list-info">
-            <g>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
-                <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/>
-              </svg>
-              <p>List info</p>
-              <p style="display: none">coming soon</p>
-            </g>
-          </button>
+            </button>
+            <button class="list-info">
+              <g>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" >
+                  <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-.001 5.75c.69 0 1.251.56 1.251 1.25s-.561 1.25-1.251 1.25-1.249-.56-1.249-1.25.559-1.25 1.249-1.25zm2.001 12.25h-4v-1c.484-.179 1-.201 1-.735v-4.467c0-.534-.516-.618-1-.797v-1h3v6.265c0 .535.517.558 1 .735v.999z"/>
+                </svg>
+                <p>List info</p>
+                <p style="display: none">coming soon</p>
+              </g>
+            </button>
+          </div>
         </form>
       </section>
     </header>
@@ -130,37 +145,59 @@
     <script>
       // jQuery practice
       $(function() {
-        var $editList = $('.editlist p');
-        var $listInfo = $('.list-info p');
 
         var click = 1;
         $('.editlist').on('click', function(event) {
           event.preventDefault();
-          // $editList.toggle();
           if (click) {
             $('section.metrics').animate({
-              width: 'toggle',
+              "flex-grow": "0",
               opacity: 'toggle',
-              left: "+=50"
-            }, 500);
+            }, 700);
+
+            $('.stay-box').css({
+              float: "right",
+            });
 
             $('.list-control-sidebar').animate({
               "flex-grow": "10",
-            }, 500);
+            }, 700);
+
+
+            $(".list-controls").css({display: "flex"});
+            $('.stay-box').css({flex: "1"});
+            $('#edit-list-checkbox-options').css({
+                display: "inline-block",
+                "flex-grow": "9"
+            });
+
+
             click = 0;
           } else {
+
+            $('#edit-list-checkbox-options').css({
+              display: "none",
+            });
+
             $('section.metrics').animate({
-              width: 'toggle',
+              "flex-grow": "9",
               opacity: 'toggle',
-              // left: "+=50"
-            }, 500);
+            }, 700);
 
             $('.list-control-sidebar').animate({
               "flex-grow": "1",
-            }, 500);
+            }, 700, function() {
+              $('.stay-box').css({
+                float: "left",
+                flex: 1,
+              });
+            });
+
             click = 1;
           }
         });
+
+        $listInfo = $('.list-info p');
 
         $('.list-info').on('click', function(event) {
           event.preventDefault();
