@@ -78,17 +78,17 @@
       <section class='list-control-sidebar'>
         <form action="#" class='list-controls'>
           <fieldset id="edit-list-checkbox-options">
-            <label><input type="checkbox" checked/>Time Weighted Return</label>
-            <label><input type="checkbox" checked/>Total Return (%)</label>
-            <label><input type="checkbox" checked/>Total Return ($)</label>
-            <label><input type="checkbox" checked/>Market Value</label>
-            <label><input type="checkbox" checked/>Total Cost Basis</label>
-            <label><input type="checkbox" checked/>Return vs. S&P 500</label>
-            <label><input type="checkbox" checked/>Today's S&P 500</label>
-            <label><input type="checkbox" checked/>1 Day Change ($)</label>
-            <label><input type="checkbox" checked/>1 Day Change (%)</label>
-            <label><input type="checkbox" checked/>Unrealized Gains</label>
-            <label><input type="checkbox" checked/>Realized Gains</label>
+              <label><input type="checkbox" checked/>Time Weighted Return</label>
+              <label><input type="checkbox" checked/>Total Return (%)</label>
+              <label><input type="checkbox" checked/>Total Return ($)</label>
+              <label><input type="checkbox" checked/>Market Value</label>
+              <label><input type="checkbox" checked/>Total Cost Basis</label>
+              <label><input type="checkbox" checked/>Return vs. S&P 500</label>
+              <label><input type="checkbox" checked/>Today's S&P 500</label>
+              <label><input type="checkbox" checked/>1 Day Change ($)</label>
+              <label><input type="checkbox" checked/>1 Day Change (%)</label>
+              <label><input type="checkbox" checked/>Unrealized Gains</label>
+              <label><input type="checkbox" checked/>Realized Gains</label>
           </fieldset>
           <div class="stay-box">
             <button class="editlist">
@@ -161,16 +161,17 @@
 
             $('.list-control-sidebar').animate({
               "flex-grow": "10",
-            }, 700);
-
-
-            $(".list-controls").css({display: "flex"});
-            $('.stay-box').css({flex: "1"});
-            $('#edit-list-checkbox-options').css({
-                display: "inline-block",
-                "flex-grow": "9"
+            }, 700, function() {
+              $(".list-controls").animate({height: "180px"}, 500);
+              $(".list-controls").css({display: "flex"});
+              $('.stay-box').css({flex: "1"});
+              $('#edit-list-checkbox-options').css({
+                  display: "inline-block",
+                  padding: "0px",
+                  margin: "0px",
+                  "max-height": "178px",
+              });
             });
-
 
             click = 0;
           } else {
@@ -178,20 +179,24 @@
             $('#edit-list-checkbox-options').css({
               display: "none",
             });
+            $(".list-controls").animate({height: "60px"}, 500, function() {
+              $('section.metrics').animate({
+                "flex-grow": "9",
+                opacity: 'toggle',
+              }, 700);
 
-            $('section.metrics').animate({
-              "flex-grow": "9",
-              opacity: 'toggle',
-            }, 700);
-
-            $('.list-control-sidebar').animate({
-              "flex-grow": "1",
-            }, 700, function() {
-              $('.stay-box').css({
-                float: "left",
-                flex: 1,
+              $('.list-control-sidebar').animate({
+                "flex-grow": "1",
+              }, 700, function() {
+                $('.stay-box').css({
+                  float: "left",
+                  flex: 1,
+                });
               });
             });
+
+            $(".list-controls").css({display: "inline-block"});
+            $('.stay-box').css({float: "right"});
 
             click = 1;
           }

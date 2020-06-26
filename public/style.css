@@ -54,6 +54,20 @@ h1 {
   font-family: arial;
 }
 
+fieldset {
+  display: block;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-block-start: 0;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  padding-block-end: 0;
+  min-inline-size: min-content;
+  border-width: 0px;
+  border-style: none;
+  border-image: none;
+}
+
 #canvas-container {
   width: 300px;
   height: 300px;
@@ -115,6 +129,7 @@ p {
   min-width: 95px;
   height: 185px;
   flex: 1;
+  overflow: hidden;
 }
 
 svg {
@@ -171,6 +186,13 @@ button p {
   display: none;
 }
 
+#edit-list-checkbox-options label {
+  margin: 0 10px 0 0;
+  display: inline-block;
+  width: 220px;
+  height: 30px;
+}
+
 header g {
   width: 100%;
   cursor: pointer;
@@ -186,6 +208,7 @@ header g {
 .list-controls {
   background-color: #8c8c8c;
   width: 100%;
+  overflow: hidden;
   display: inline-block;
   border-top: 2px solid grey;
   border-bottom: 2px solid grey;
