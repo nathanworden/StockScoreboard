@@ -221,22 +221,6 @@ label {
   color: white;
 }
 
-/*ul {
-  display: flex;
-  text-decoration: none;
-  list-style: none;
-  justify-content: space-between;
-  padding: 0;
-  margin: 0;
-}*/
-
-/*li {
-  flex: 1;
-  border: 1px solid green;
-  display: flex;
-  justify-content: center;
-}*/
-
 .page-tab {
   font-size: 16px;
   font-weight: 300;
