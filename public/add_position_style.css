@@ -61,12 +61,10 @@ section {
   font-size: 25px;
   color: black;
   font-weight: 300;
-  /*border: 1px solid red;*/
 }
 
 .zig-zag {
   border: 0;   /* in order to override TWBS stylesheet */
-  /*border: 1px solid blue;*/
   height: 3px;
   background: linear-gradient(to right, 
     #356697 16%, #fccc37 16% 33%, #be3913 33% 50%, #3b933b 50% 66%, #356697 66% 83%, #fccc37 83%);
@@ -98,25 +96,17 @@ svg:hover {
   fill: #be3913;
 }
 
-form {
-  /*border: 1px solid blue;*/
-}
-
 .form-row {
-  /*border: 1px solid orange;*/
   display: flex;
   padding: 25px 40px 20px 40px;
 }
 
 .form-row label {
-  /*display: block;*/
   flex: 3;
-  /*border: 1px solid orange;*/
 }
 
 .form-row input {
   flex: 5;
-  /*border: 1px solid blue;*/
 }
 
 .hide {

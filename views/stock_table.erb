@@ -21,6 +21,50 @@
       <h2>Add a Position</h2>
     </button>
   </form>
+
+
+  <div class="add-position-modal">
+    <div class="modal-header">
+      <h1>Add a Position</h1>
+      <a class="close" href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6 16.538l-4.592-4.548 4.546-4.587-1.416-1.403-4.545 4.589-4.588-4.543-1.405 1.405 4.593 4.552-4.547 4.592 1.405 1.405 4.555-4.596 4.591 4.55 1.403-1.416z"/></svg>
+      </a>
+    </div>
+    <hr class="zig-zag">
+    <section class="session-error">
+      <%= @error if @error %>
+    </section>
+    <section class="stock-info">
+      <form action="/addposition" method="post">
+        <div class="form-row">
+          <label for="ticker">Ticker</label>
+          <input type="text" name='ticker' id="ticker" value="<%= @position[:ticker] unless !@position %>"/>
+        </div>
+        <div class="form-row">
+          <label for="shares">Shares</label>
+          <input type="text" name='shares' id="shares" value="<%= @position[:shares] unless !@position %>"/>
+        </div>
+        <div class="form-row">
+          <label for="purchase-date">Purchase Date</label>
+          <input type="text" name='purchase-date' id="purchase-date" value="<%= @position[:purchase_date] unless !@position %>" placeholder="mm/dd/yyyy"/>
+        </div>
+        <div class="form-row">
+          <label for="purchase-price">Purchase Price</label>
+          <input type="text" name='purchase-price' id="purchase-price" value="<%= @position[:purchase_price] unless !@position %>"/>
+        </div>
+        <div class="form-row">
+          <label for="commission">Commission</label>
+          <input type="text" name="commission" id="commission" value="<%= @position[:commission] unless !@position %>"/>
+        </div>
+        <button type="submit">
+            Add
+        </button>
+      </form>
+    </section>
+  </div>
+  <div class="modal-layer"></div>
+
+
 </section>
 <section class="edit-table-column-options">
   <form>

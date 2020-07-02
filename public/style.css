@@ -132,14 +132,12 @@ p {
   overflow: hidden;
 }
 
-svg {
+.stay-box svg {
   flex: 1;
   color: white;
-  /*align-self: center;*/
   fill: currentcolor;
   margin: 0;
   padding: 0;
-  /*border: 1px solid red;*/
 }
 
 button p {
@@ -610,7 +608,6 @@ main hr {
   display: flex;
   padding: 4px;
   margin: 5px;
-  /*border: 1px solid red;*/
 }
 
 .table-toolbar .search-print {
@@ -621,7 +618,6 @@ main hr {
   margin:  0 7px 0 0;
   padding: 0 0 0 20px;
   align-items: center;
-  /*border: 1px solid red;*/
 }
 
 [for="search"] {
@@ -629,7 +625,6 @@ main hr {
 }
 
 .print {
-  /*border: 1px solid blue;*/
   display: flex;
   flex: 1;
 }
@@ -662,6 +657,102 @@ main hr {
   box-shadow: 0 2px 2px -2px;
   background: linear-gradient(to top, 
     #e8e8e8, white);
+}
+
+.add-position-modal {
+  display: none;
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  z-index: 3;
+  width: 500px;
+  margin-left: -250px;
+  text-align: left;
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+.add-position-modal .stock-info {
+  height: 100%;
+  padding: 20px 40px 40px 40px;
+  align-items: center;
+}
+
+.modal-layer {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  background: rgba(0, 0, 0, .3);
+}
+
+.modal-header {
+  height: 70px;
+  padding: 0;
+  display: grid;
+  z-index: 3;
+}
+
+.modal-header h1 {
+  display: block;
+  text-align: center;
+  align-self: center;
+  font-size: 25px;
+  color: black;
+  font-weight: 300;
+}
+
+.modal-header a {
+  position: relative;
+  left: 467px;
+  bottom: 65px;
+  cursor: pointer;
+  color: black;
+}
+
+.modal-header svg {
+  fill: black;
+}
+
+.modal-header svg:hover {
+  /*fill: #be3913;*/
+  fill: #bf3a14;
+}
+
+.session-error {
+  background-color: #ff6961;
+  margin: 20px 0px 0px 0px;
+  text-align: center;
+  color: black;
+}
+
+.form-row {
+  display: flex;
+  padding: 25px 40px 20px 40px;
+}
+
+.form-row label {
+  flex: 3;
+}
+
+.form-row input {
+  flex: 5;
+}
+
+.stock-info button {
+  padding: 7px 14px 7px 14px;
+  margin: 10px 0px 0px 40px;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px -3px;
+  background: linear-gradient(to top, 
+  #e8e8e8, white);
+}
+
+.hide {
+  visibility: hidden;
 }
 
 .search-print button {

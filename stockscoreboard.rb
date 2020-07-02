@@ -91,6 +91,8 @@ post "/" do
 end
 
 get "/" do
+  @error = session[:error]
+
   all_positions = @storage.get_all_positions
   @total_portfolio_cost_basis = @storage.get_full_portfolio_cost_basis
   @all_positions = pull_market_data(all_positions, @total_portfolio_cost_basis)
@@ -116,13 +118,10 @@ get "/" do
   erb :stock_table, layout: :layout
 end
 
-get "/allocation" do
-  erb :allocation, layout: :blank
-end
-
 get "/addposition" do 
   @error = session[:error]
-  erb :addposition, layout: :blank
+  # erb :addposition, layout: :blank
+  erb :stock_table, layout: :layout
 end
 
 post "/addposition" do
