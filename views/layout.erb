@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/scripts/modals.js"></script>
+    <script src="/scripts/edit-list-animation.js"></script>
   </head>
   <body>
     <nav class="topnav highlight" id="myTopnav">
@@ -142,76 +143,6 @@
       function display() {
         window.print()
       }
-    </script>
-    <script>
-      // jQuery practice
-      $(function() {
-
-        var click = 1;
-        $('.editlist').on('click', function(event) {
-          event.preventDefault();
-          if (click) {
-            $('section.metrics').animate({
-              "flex-grow": "0",
-              opacity: 'toggle',
-            }, 700);
-
-            $('.stay-box').css({
-              float: "right",
-            });
-
-            $('.list-control-sidebar').animate({
-              "flex-grow": "10",
-            }, 700, function() {
-              $(".list-controls").animate({height: "180px"}, 500);
-              $(".list-controls").css({display: "flex"});
-              $('.stay-box').css({flex: "1"});
-              $('#edit-list-checkbox-options').css({
-                  display: "inline-block",
-                  padding: "0px",
-                  margin: "0px",
-                  "max-height": "178px",
-              });
-            });
-
-            click = 0;
-          } else {
-
-            $('#edit-list-checkbox-options').css({
-              display: "none",
-            });
-            $(".list-controls").animate({height: "60px"}, 500, function() {
-              $('section.metrics').animate({
-                "flex-grow": "9",
-                opacity: 'toggle',
-              }, 700);
-
-              $('.list-control-sidebar').animate({
-                "flex-grow": "1",
-              }, 700, function() {
-                $('.stay-box').css({
-                  float: "left",
-                  flex: 1,
-                });
-              });
-            });
-
-            $(".list-controls").css({display: "inline-block"});
-            $('.stay-box').css({float: "right"});
-
-            click = 1;
-          }
-        });
-
-        $listInfo = $('.list-info p');
-
-        $('.list-info').on('click', function(event) {
-          event.preventDefault();
-          $listInfo.toggle();
-        })
-
-
-      });  
     </script>
   </body>
 </html>
