@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="/scripts/modals.js"></script>
     <script src="/scripts/edit-list-animation.js"></script>
+    <script src="/scripts/edit-list-filter.js"></script>
   </head>
   <body>
     <nav class="topnav highlight" id="myTopnav">
@@ -21,57 +22,57 @@
     <hr class="zig-zag">
     <header>
       <section class="metrics">
-        <article class="metric">
+        <article id="time-weighted-return" class="metric">
           <h6>Time Weighted Return:</h6>
           <hr>
 <!--           <p class="<%= pos_or_neg(@time_weighted_return_to_date) %>"><%= @time_weighted_return_to_date %>%</p> -->
         </article>
-        <article class="metric">
+        <article id="total-return-percent" class="metric">
           <h6>Total Return (%):</h6>
           <hr>
           <p class="<%= pos_or_neg(@total_portfolio_returns_percent)%>"><%= (@total_portfolio_returns_percent * 100).round(2) %>%</p>
         </article>
-        <article class="metric"> 
+        <article id="total-return-dollars" class="metric"> 
           <h6>Total Returns ($):</h6>
           <hr>
           <p class="<%= pos_or_neg(@total_portfolio_returns_in_dollars) %>"><%= format_num(@total_portfolio_returns_in_dollars.round(2), 'include_dollar_sign') %></p>
         </article>
-        <article class="metric">
+        <article id="market-value" class="metric">
           <h6>Market Value</h6>
           <hr>
           <p><%= format_num(@total_current_portfolio_market_value, 'include_dollar_sign') %></p>
         </article>
-        <article class="metric">
+        <article id="total-cost-basis" class="metric">
           <h6>Total Cost Basis</h6>
           <hr>
           <p><%= format_num(@total_portfolio_cost_basis, 'include_dollar_sign') %></p>
         </article>
-        <article class="metric">
+        <article id="return-vs-s&p500" class="metric">
           <h6>Return vs. S&P 500</h6>
           <hr>
           <p class="pos"></p>
         </article>
-        <article class="metric">
+        <article id="todays-s&p500" class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
           <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points, 'include_dollar_sign').slice(1..-1) %> (<%= @todays_sp_percent =%>%)</p>
         </article>
-        <article class="metric">
+        <article id="one-day-change-dollars" class="metric">
           <h6>1 Day Change ($)</h6>
           <hr>
           <p class="<%=  pos_or_neg(@one_day_change_dollars) %>"><%= format_num(@one_day_change_dollars, 'include_dollar_sign') %></p>
         </article>
-        <article class="metric">
+        <article id="one-day-change-percent" class="metric">
           <h6>1 Day Change (%)</h6>
           <hr>
           <p class="<%= pos_or_neg(@one_day_change_percent)%>"><%= @one_day_change_percent%>%</p>
         </article>
-        <article class="metric">
+        <article id="unrealized-gains" class="metric">
           <h6>Unrealized Gains</h6>
           <hr>
           <p class="pos"></p>
         </article>
-        <article class="metric">
+        <article id="realized-gains" class="metric">
           <h6>Realized Gains</h6>
           <hr>
           <p class="neg"></p>
@@ -80,17 +81,17 @@
       <section class='list-control-sidebar'>
         <form action="#" class='list-controls'>
           <fieldset id="edit-list-checkbox-options">
-              <label><input type="checkbox" checked/>Time Weighted Return</label>
-              <label><input type="checkbox" checked/>Total Return (%)</label>
-              <label><input type="checkbox" checked/>Total Return ($)</label>
-              <label><input type="checkbox" checked/>Market Value</label>
-              <label><input type="checkbox" checked/>Total Cost Basis</label>
-              <label><input type="checkbox" checked/>Return vs. S&P 500</label>
-              <label><input type="checkbox" checked/>Today's S&P 500</label>
-              <label><input type="checkbox" checked/>1 Day Change ($)</label>
-              <label><input type="checkbox" checked/>1 Day Change (%)</label>
-              <label><input type="checkbox" checked/>Unrealized Gains</label>
-              <label><input type="checkbox" checked/>Realized Gains</label>
+              <label><input type="checkbox" name="time-weighted-return" checked/>Time Weighted Return</label>
+              <label><input type="checkbox" name="total-return-percent" checked/>Total Return (%)</label>
+              <label><input type="checkbox" name="total-return-dollars" checked/>Total Return ($)</label>
+              <label><input type="checkbox" name="market-value" checked/>Market Value</label>
+              <label><input type="checkbox" name="total-cost-basis" checked/>Total Cost Basis</label>
+              <label><input type="checkbox" name="return-vs-s&p500" checked/>Return vs. S&P 500</label>
+              <label><input type="checkbox" name="todays-s&p500" checked/>Today's S&P 500</label>
+              <label><input type="checkbox" name="one-day-change-dollars" checked/>1 Day Change ($)</label>
+              <label><input type="checkbox" name="one-day-change-percent" checked/>1 Day Change (%)</label>
+              <label><input type="checkbox" name="unrealized-gains" checked/>Unrealized Gains</label>
+              <label><input type="checkbox" name="realized-gains" checked/>Realized Gains</label>
           </fieldset>
           <div class="stay-box">
             <button class="editlist">
