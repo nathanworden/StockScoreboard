@@ -14,7 +14,6 @@ $(function() {
     $(".modal-layer, a.close").on("click", function(event) {
       event.preventDefault();
 
-      console.log(event);
       $(".add-position-modal").fadeOut(400);
       $(".modal-layer").fadeOut(400);
     });

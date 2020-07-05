@@ -47,12 +47,12 @@
           <hr>
           <p><%= format_num(@total_portfolio_cost_basis, 'include_dollar_sign') %></p>
         </article>
-        <article id="return-vs-s&p500" class="metric">
+        <article id="return-vs-s_and_p500" class="metric">
           <h6>Return vs. S&P 500</h6>
           <hr>
           <p class="pos"></p>
         </article>
-        <article id="todays-s&p500" class="metric">
+        <article id="todays-s_and_p500" class="metric">
           <h6>Today's S&P 500</h6>
           <hr>
           <p class="<%=  pos_or_neg(@todays_sp_percent) %>"><%= format_num(@todays_sp_points, 'include_dollar_sign').slice(1..-1) %> (<%= @todays_sp_percent =%>%)</p>
@@ -86,8 +86,8 @@
               <label><input type="checkbox" name="total-return-dollars" checked/>Total Return ($)</label>
               <label><input type="checkbox" name="market-value" checked/>Market Value</label>
               <label><input type="checkbox" name="total-cost-basis" checked/>Total Cost Basis</label>
-              <label><input type="checkbox" name="return-vs-s&p500" checked/>Return vs. S&P 500</label>
-              <label><input type="checkbox" name="todays-s&p500" checked/>Today's S&P 500</label>
+              <label><input type="checkbox" name="return-vs-s_and_p500" checked/>Return vs. S&P 500</label>
+              <label><input type="checkbox" name="todays-s_and_p500" checked/>Today's S&P 500</label>
               <label><input type="checkbox" name="one-day-change-dollars" checked/>1 Day Change ($)</label>
               <label><input type="checkbox" name="one-day-change-percent" checked/>1 Day Change (%)</label>
               <label><input type="checkbox" name="unrealized-gains" checked/>Unrealized Gains</label>
