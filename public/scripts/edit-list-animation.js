@@ -55,9 +55,7 @@ $(function() {
         $('.list-control-sidebar').animate({
           "flex-grow": "1",
         }, 700, function() {
-          $('.stay-box').css({
-            flex: 1,
-          });
+          $('.stay-box').css({ flex: "1"});
 
           $editlist.prop('disabled', false);
         });

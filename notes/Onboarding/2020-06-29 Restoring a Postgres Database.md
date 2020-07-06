@@ -40,3 +40,4 @@ Run:
 `pg_restore --verbose --clean --no-acl --no-owner -h localhost -U myuser -d mydb 06292020_heroku_stock_scoreboard.dump`
 
 Where `myuser` is your user on your computer and `mydb` is `stock_scoreboard`
+
