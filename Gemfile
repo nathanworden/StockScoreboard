@@ -1,12 +1,13 @@
 source "https://rubygems.org"
 
 gem "stock_quote", '~> 3.0.0'
-gem "sinatra", "~>1.4.7"
-gem "sinatra-contrib"
+gem "sinatra", "~>2.0.8.1"
+gem "sinatra-contrib", "~> 2.0.8.1"
 gem "erubis"
 gem "pg"
 gem "nokogiri"
 gem "alpaca-trade-api"
+gem "rack", ">= 2.1.4"
 
 
 ruby "2.6.3"
