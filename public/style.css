@@ -68,17 +68,25 @@ fieldset {
   border-image: none;
 }
 
-#canvas-container {
+/*#canvas-container {
   width: 300px;
   height: 300px;
   margin: auto;
   margin-top: 50px;
   color: red;
-}
+}*/
 
 /*main section {
   padding: 0 0 0 60px;
 }*/
+
+[name="allocation"] {
+  display: none;
+}
+
+[name="performance"] {
+  display: none;
+}
 
 .option-heading {
   /*background-color: salmon;*/
