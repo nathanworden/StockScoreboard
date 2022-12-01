@@ -1,8 +1,8 @@
 source "https://rubygems.org"
 
 gem "stock_quote", '~> 3.0.0'
-gem "sinatra", "~>2.0.8.1"
-gem "sinatra-contrib", "~> 2.0.8.1"
+gem "sinatra", "~>3.0.4"
+gem "sinatra-contrib", "~> 3.0.4"
 gem "erubis"
 gem "pg"
 gem "nokogiri"
